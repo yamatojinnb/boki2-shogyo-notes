@@ -12,9 +12,9 @@ export const STATUS_COLOR_VAR: Record<string, string> = {
   'exposure-draft': 'var(--gold)',
 };
 
-// "IFRS18" → "IFRS 18" のように基準名バッジ用に整形する
+// "IFRS18"→"IFRS 18"、"IAS7/IFRS7"→"IAS 7/IFRS 7" のように基準名バッジ用に整形する
 export function formatStandardBadge(standard: string): string {
-  return standard.replace(/^IFRS/, 'IFRS ');
+  return standard.replace(/(IFRS|IAS)(\d)/g, '$1 $2');
 }
 
 // "2027年1月1日" や "未定（2028年以降の見込み）" から年を抽出する（タイムライン配置用）

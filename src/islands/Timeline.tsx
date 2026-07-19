@@ -35,6 +35,18 @@ export default function Timeline({ items }: Props) {
   const yearList = Array.from({ length: maxYear - minYear + 1 }, (_, i) => minYear + i);
   const pos = (year: number) => `${((year - minYear) / span) * 100}%`;
 
+  // 同じ年に複数件ある場合はドットが重なって押せなくなるため、縦方向にずらして積む
+  const STACK_GAP = 34;
+  const countsByYear = new Map<number, number>();
+  const stacked = items.map((it) => {
+    const index = countsByYear.get(it.year) ?? 0;
+    countsByYear.set(it.year, index + 1);
+    return { ...it, stackIndex: index };
+  });
+  const maxStack = Math.max(...Array.from(countsByYear.values()));
+  const offsetY = (stackIndex: number, total: number) => (stackIndex - (total - 1) / 2) * STACK_GAP;
+  const trackHeight = Math.max(74, maxStack * STACK_GAP + 56);
+
   return (
     <div class="timeline">
       <ul class="timeline-legend" aria-hidden="true">
@@ -45,14 +57,14 @@ export default function Timeline({ items }: Props) {
           </li>
         ))}
       </ul>
-      <div class="timeline-track">
+      <div class="timeline-track" style={`height:${trackHeight}px`}>
         <div class="timeline-line" />
-        {items.map((it) => (
+        {stacked.map((it) => (
           <a
             key={it.id}
             href={it.href}
             class="timeline-dot"
-            style={`left:${pos(it.year)}; --dot-color:${STATUS_COLOR[it.status]}`}
+            style={`left:${pos(it.year)}; top:calc(50% + ${offsetY(it.stackIndex, countsByYear.get(it.year) ?? 1)}px); --dot-color:${STATUS_COLOR[it.status]}`}
             aria-label={`${it.standardBadge}｜${it.title}｜適用開始 ${it.effectiveDate}`}
           >
             <span class="timeline-dot-mark" />
