@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { base } from '../lib/site';
 
 const lessons = (await getCollection('lessons')).sort((a, b) => a.data.order - b.data.order);
 // インデックスタブの色をレッスンごとにローテーション
@@ -36,7 +37,7 @@ const tabColors = ['var(--ledger)', 'var(--debit)', 'var(--credit)', 'var(--gold
           <li>
             <a
               class="lesson-card"
-              href={`/lessons/${l.id}/`}
+              href={`${base}lessons/${l.id}/`}
               style={`--tab-color:${tabColors[i % tabColors.length]}`}
             >
               <span class="card-tab">{l.data.category}</span>

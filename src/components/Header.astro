@@ -1,10 +1,11 @@
 ---
 // 共通ヘッダー：スクロール追従＋すりガラス
+import { base } from '../lib/site';
 ---
 
 <header class="site-header">
   <div class="container inner">
-    <a class="brand" href="/">
+    <a class="brand" href={base}>
       <span class="brand-mark" aria-hidden="true">簿</span>
       <span>
         <span class="brand-name">商業簿記ノート</span><br />
@@ -12,7 +13,7 @@
       </span>
     </a>
     <nav class="site-nav" aria-label="サイト内">
-      <a href="/#lessons">レッスン一覧</a>
+      <a href={`${base}#lessons`}>レッスン一覧</a>
     </nav>
   </div>
 </header>
