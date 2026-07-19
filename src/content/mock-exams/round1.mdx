@@ -10,232 +10,400 @@ import Journal from '../../components/Journal.astro';
 import Point from '../../components/Point.astro';
 import DataTable from '../../components/DataTable.astro';
 import RevealSection from '../../islands/RevealSection.tsx';
+import GuidedExplanation from '../../components/GuidedExplanation.tsx';
+import TextExplanation from '../../components/TextExplanation.tsx';
 
 <div id="mock-panel-q1">
 
 ## 第1問 仕訳問題（4点×5問＝20点）
 
-次の各取引について仕訳しなさい。勘定科目は最も適切と思われるものを使用すること。
+次の各取引について仕訳しなさい。勘定科目は最も適切と思われるものを使用すること。各設問は、問題文のハイライトと仕訳が連動する「ガイド付き解説」で確認できます。従来型のテキストで通しで読みたい場合は、その下の「テキスト解説」を開いてください。
 
 <div class="mock-question">
-<div class="mock-question-head">
-<h3>問1　売買目的有価証券の売却</h3>
-<span class="mock-question-pts">4点</span>
-</div>
-<div class="mock-question-body">
 
-甲商事株式会社の株式200株（売買目的で保有、1株の帳簿価額 ¥480）を、1株 ¥520で売却し、代金は当座預金に入金された。
-
-</div>
-
-<RevealSection label="解答を表示" targetId="q1-1-answer" client:load />
-<div id="q1-1-answer" class="reveal-panel"><div class="reveal-inner">
-
-<Journal
-  caption="仕訳"
-  debit={[{ account: '当座預金', amount: 104000 }]}
-  credit={[{ account: '売買目的有価証券', amount: 96000 }, { account: '有価証券売却益', amount: 8000 }]}
-/>
-
-</div></div>
-
-<RevealSection label="解説を表示" targetId="q1-1-explanation" client:load />
-<div id="q1-1-explanation" class="reveal-panel"><div class="reveal-inner">
-
-<ol class="steps">
-<li>帳簿価額の合計 ＝ ＠480円 × 200株 ＝ 96,000円</li>
-<li>売却価額の合計 ＝ ＠520円 × 200株 ＝ 104,000円</li>
-<li>差額 104,000円 − 96,000円 ＝ 8,000円が売却益</li>
-</ol>
-
-売買目的有価証券は、時価の変動によって利益を得る目的で保有する株式・債券です。売却した時点の帳簿価額と売却価額の差額を「有価証券売却益（または売却損）」として計上します。
-
-<div class="mistake-box">
-⚠ ここで間違えやすい：決算時に時価評価して生じる差額は「有価証券<strong>評価</strong>益／評価損」ですが、売却によって確定した差額は「有価証券<strong>売却</strong>益／売却損」です。名称が似ているので取り違えないようにしましょう。
-</div>
-
-<div class="related-box">
-関連知識：<a href="/boki2-shogyo-notes/lessons/yuka-shoken/">L5 有価証券の4分類と期末評価</a>
-</div>
-
-</div></div>
-</div>
-
-<div class="mock-question">
-<div class="mock-question-head">
-<h3>問2　固定資産の期中売却</h3>
-<span class="mock-question-pts">4点</span>
-</div>
-<div class="mock-question-body">
-
-×2年9月30日に、×1年4月1日に取得した備品（取得原価 ¥600,000、耐用年数5年、残存価額ゼロ、定額法、間接法で記帳）を ¥450,000で売却し、代金は月末に受け取ることとした。なお、会計期間は4月1日から翌年3月31日までであり、売却日までの当期分の減価償却費を月割りで計上する。
-
-</div>
-
-<RevealSection label="解答を表示" targetId="q1-2-answer" client:load />
-<div id="q1-2-answer" class="reveal-panel"><div class="reveal-inner">
-
-<Journal
-  caption="仕訳"
-  debit={[
-    { account: '減価償却費', amount: 60000 },
-    { account: '備品減価償却累計額', amount: 120000 },
-    { account: '未収入金', amount: 450000 },
+<GuidedExplanation
+  questionNumber="問1"
+  questionTitle="売買目的有価証券の売却"
+  points={4}
+  problemSegments={[
+    { id: 's1', text: '甲商事株式会社の', isHighlightable: false },
+    { id: 's2', text: '株式200株', isHighlightable: true },
+    { id: 's3', text: '（', isHighlightable: false },
+    { id: 's4', text: '売買目的で保有', isHighlightable: true },
+    { id: 's5', text: '、', isHighlightable: false },
+    { id: 's6', text: '1株の帳簿価額 ¥480', isHighlightable: true },
+    { id: 's7', text: '）を、', isHighlightable: false },
+    { id: 's8', text: '1株 ¥520で売却', isHighlightable: true },
+    { id: 's9', text: 'し、代金は', isHighlightable: false },
+    { id: 's10', text: '当座預金に入金', isHighlightable: true },
+    { id: 's11', text: 'された。', isHighlightable: false },
   ]}
-  credit={[
-    { account: '備品', amount: 600000 },
-    { account: '固定資産売却益', amount: 30000 },
+  journal={[
+    { debit: { account: '当座預金', amount: '104,000' }, credit: { account: '売買目的有価証券', amount: '96,000' } },
+    { debit: null, credit: { account: '有価証券売却益', amount: '8,000' } },
   ]}
+  steps={[
+    {
+      tag: 'STEP 1 — 帳簿価額を読み取る',
+      body: '<p>保有株数と1株あたりの帳簿価額から、売却する有価証券の帳簿価額の合計を計算します。</p><div class="calc">＠480円 × 200株 ＝ 96,000円</div><p>この96,000円が、貸方に計上する「売買目的有価証券」の金額になります。</p>',
+      highlights: ['s2', 's6'],
+      highlightColor: 'blue',
+      journalGlow: [{ id: 'c0', color: 'blue' }],
+    },
+    {
+      tag: 'STEP 2 — 保有目的を確認する',
+      body: '<p>有価証券は保有目的によって勘定科目が変わります。「売買目的で保有」とあるので、この株式は<strong>売買目的有価証券</strong>に区分されます。満期保有目的や子会社株式、その他有価証券とは評価方法も科目名も異なるため、保有目的の文言を必ず確認しましょう。</p>',
+      highlights: ['s4'],
+      highlightColor: 'green',
+      journalGlow: [{ id: 'c0', color: 'green' }],
+    },
+    {
+      tag: 'STEP 3 — 売却価額と売却損益を計算する',
+      body: '<p>売却時の受取額を計算し、帳簿価額との差額を求めます。</p><div class="calc">＠520円 × 200株 ＝ 104,000円\n104,000円 − 96,000円 ＝ 8,000円（売却益）</div><p>差額がプラスなので「有価証券売却益」（収益）を貸方に計上します。</p>',
+      highlights: ['s8'],
+      highlightColor: 'amber',
+      journalGlow: [{ id: 'c1', color: 'amber' }],
+    },
+    {
+      tag: 'STEP 4 — 入金先を読み取る',
+      body: '<p>代金の受け取り先を確認します。「当座預金に入金」とあるので、借方は<strong>当座預金</strong>104,000円です。売却価額の全額がそのまま入金されている点も確認しておきましょう。</p>',
+      highlights: ['s10'],
+      highlightColor: 'rose',
+      journalGlow: [{ id: 'd0', color: 'rose' }],
+    },
+    {
+      tag: 'STEP 5 — 検算とありがちなミス',
+      body: '<p>借方合計と貸方合計が一致するか確認します。</p><div class="calc">借方 104,000円 ＝ 貸方 96,000円 ＋ 8,000円</div><div class="mistake">⚠ 決算時の時価評価で生じる差額は「有価証券<strong>評価</strong>益／評価損」ですが、売却によって確定した差額は「有価証券<strong>売却</strong>益／売却損」です。名称が似ているので取り違えないようにしましょう。</div>',
+      highlights: [],
+      highlightColor: 'green',
+      journalGlow: [{ id: 'd0', color: 'green' }, { id: 'c0', color: 'green' }, { id: 'c1', color: 'green' }],
+    },
+  ]}
+  relatedLesson={{ slug: 'yuka-shoken', title: 'L5 有価証券の4分類と期末評価' }}
+  client:load
 />
 
-</div></div>
+<TextExplanation
+  steps={[
+    'STEP1：帳簿価額の合計を計算する。＠480円 × 200株 ＝ 96,000円。',
+    'STEP2：売却価額の合計を計算する。＠520円 × 200株 ＝ 104,000円。',
+    'STEP3：差額を求める。104,000円 − 96,000円 ＝ 8,000円が売却益となる。',
+    'STEP4：代金は当座預金に入金されているため、借方は当座預金104,000円で処理する。',
+  ]}
+  journal={[
+    { debit: { account: '当座預金', amount: '104,000' }, credit: { account: '売買目的有価証券', amount: '96,000' } },
+    { debit: null, credit: { account: '有価証券売却益', amount: '8,000' } },
+  ]}
+  supplement="売買目的有価証券は、短期的な値上がり益を狙って保有する株式・債券です。期末に保有している場合は時価で評価替えを行い、評価差額を当期の損益として処理しますが、今回のように期中に売却した場合は、売却によって確定した損益を「有価証券売却損益」として計上します。同じ有価証券でも、決算時の評価か売却時の処理かによって使用する勘定科目が変わる点を押さえておくと、他の論点（満期保有目的債券やその他有価証券）との違いも整理しやすくなります。"
+  mistakes="決算時に時価評価して生じる差額は「有価証券評価益／評価損」、売却によって確定した差額は「有価証券売却益／売却損」です。名称が似ているため、問題文が「売却」なのか「決算時の評価」なのかを必ず確認してから勘定科目を選びましょう。"
+  relatedLesson={{ slug: 'yuka-shoken', title: 'L5 有価証券の4分類と期末評価' }}
+  client:load
+/>
 
-<RevealSection label="解説を表示" targetId="q1-2-explanation" client:load />
-<div id="q1-2-explanation" class="reveal-panel"><div class="reveal-inner">
-
-<ol class="steps">
-<li>年間の減価償却費 ＝ 600,000円 ÷ 5年 ＝ 120,000円</li>
-<li>前期末（×2年3月31日）までの償却累計額 ＝ 120,000円（×1年4月〜×2年3月の12か月分）</li>
-<li>当期の月割り償却費 ＝ 120,000円 × 6か月／12か月 ＝ 60,000円（×2年4月〜9月）</li>
-<li>売却時の帳簿価額 ＝ 600,000円 − 120,000円 − 60,000円 ＝ 420,000円</li>
-<li>売却益 ＝ 450,000円 − 420,000円 ＝ 30,000円</li>
-</ol>
-
-期中に固定資産を売却するときは、期首から売却日までの分の減価償却費をまず計上してから、帳簿価額と売却価額を比較して売却損益を求めます。「減価償却費の月割り計上」と「売却損益の算定」の2ステップに分けて考えると整理しやすくなります。
-
-<div class="mistake-box">
-⚠ ここで間違えやすい：①当期分（4月〜9月）の減価償却費の計上を忘れて、前期末の帳簿価額のまま売却損益を計算してしまう。②売却代金の未収分を「売掛金」としてしまう（売掛金は商品売買から生じた債権に限られ、それ以外の未収金は「未収入金」を使う）。
-</div>
-
-<div class="related-box">
-関連知識：<a href="/boki2-shogyo-notes/lessons/genka-shokyaku/">L2 減価償却 — 定額法と200%定率法</a>
-</div>
-
-</div></div>
 </div>
 
 <div class="mock-question">
-<div class="mock-question-head">
-<h3>問3　貸倒れの処理（前期発生の売掛金）</h3>
-<span class="mock-question-pts">4点</span>
-</div>
-<div class="mock-question-body">
 
-前期に発生した得意先ひかり商店に対する売掛金 ¥50,000が貸し倒れた。なお、貸倒引当金の残高は ¥35,000である。
-
-</div>
-
-<RevealSection label="解答を表示" targetId="q1-3-answer" client:load />
-<div id="q1-3-answer" class="reveal-panel"><div class="reveal-inner">
-
-<Journal
-  caption="仕訳"
-  debit={[{ account: '貸倒引当金', amount: 35000 }, { account: '貸倒損失', amount: 15000 }]}
-  credit={[{ account: '売掛金', amount: 50000 }]}
+<GuidedExplanation
+  questionNumber="問2"
+  questionTitle="固定資産の期中売却"
+  points={4}
+  problemSegments={[
+    { id: 's1', text: '×2年9月30日', isHighlightable: true },
+    { id: 's2', text: 'に、', isHighlightable: false },
+    { id: 's3', text: '×1年4月1日に取得した', isHighlightable: true },
+    { id: 's4', text: '備品（', isHighlightable: false },
+    { id: 's5', text: '取得原価 ¥600,000', isHighlightable: true },
+    { id: 's6', text: '、', isHighlightable: false },
+    { id: 's7', text: '耐用年数5年、残存価額ゼロ、定額法', isHighlightable: true },
+    { id: 's8', text: '、', isHighlightable: false },
+    { id: 's9', text: '間接法で記帳', isHighlightable: true },
+    { id: 's10', text: '）を', isHighlightable: false },
+    { id: 's11', text: '¥450,000で売却', isHighlightable: true },
+    { id: 's12', text: 'し、代金は', isHighlightable: false },
+    { id: 's13', text: '月末に受け取る', isHighlightable: true },
+    { id: 's14', text: 'こととした。なお、会計期間は4月1日〜3月31日であり、売却日までの当期分の減価償却費を月割りで計上する。', isHighlightable: false },
+  ]}
+  journal={[
+    { debit: { account: '減価償却費', amount: '60,000' }, credit: { account: '備品', amount: '600,000' } },
+    { debit: { account: '備品減価償却累計額', amount: '120,000' }, credit: { account: '固定資産売却益', amount: '30,000' } },
+    { debit: { account: '未収入金', amount: '450,000' }, credit: null },
+  ]}
+  steps={[
+    {
+      tag: 'STEP 1 — 年間償却費を計算する',
+      body: '<div class="calc">600,000円 ÷ 5年 ＝ 120,000円（年間の減価償却費）</div><p>まず1年間でいくら償却するのかを計算します。この金額をもとに、前期までの累計額と当期の月割り分を求めます。</p>',
+      highlights: ['s5', 's7'],
+      highlightColor: 'blue',
+      journalGlow: [{ id: 'd0', color: 'blue' }],
+    },
+    {
+      tag: 'STEP 2 — 売却日までの月数を数える',
+      body: '<p>取得日×1年4月1日から売却日×2年9月30日までを、決算期（4月〜3月）で区切って考えます。</p><div class="calc">前期(×1年4月〜×2年3月)＝12か月 → 累計120,000円\n当期(×2年4月〜9月)＝6か月 → 120,000円×6/12＝60,000円</div><p>当期分の減価償却費は60,000円です。</p>',
+      highlights: ['s1', 's3'],
+      highlightColor: 'green',
+      journalGlow: [{ id: 'd0', color: 'green' }],
+    },
+    {
+      tag: 'STEP 3 — 帳簿価額を算定する',
+      body: '<p>「間接法で記帳」なので、取得原価から減価償却累計額を控除して帳簿価額を求めます。</p><div class="calc">帳簿価額 ＝ 600,000円 − 120,000円（前期までの累計）− 60,000円（当期分）＝ 420,000円</div><p>備品減価償却累計額120,000円を借方に計上し、備品600,000円を貸方から取り除きます。</p>',
+      highlights: ['s9'],
+      highlightColor: 'amber',
+      journalGlow: [{ id: 'd1', color: 'amber' }, { id: 'c0', color: 'amber' }],
+    },
+    {
+      tag: 'STEP 4 — 売却損益を計算する',
+      body: '<div class="calc">売却損益 ＝ 450,000円（売却価額）− 420,000円（帳簿価額）＝ 30,000円（売却益）</div><p>帳簿価額より高く売れたため、差額は「固定資産売却益」（収益）として貸方に計上します。</p>',
+      highlights: ['s11'],
+      highlightColor: 'rose',
+      journalGlow: [{ id: 'c1', color: 'rose' }],
+    },
+    {
+      tag: 'STEP 5 — 代金の受取方法を確認する',
+      body: '<p>「月末に受け取る」とあるので、代金はまだ入金されていません。商品売買以外から生じた未収額なので、借方は<strong>未収入金</strong>450,000円で処理します（「売掛金」は商品売買から生じた債権専用の科目です）。</p>',
+      highlights: ['s13'],
+      highlightColor: 'purple',
+      journalGlow: [{ id: 'd2', color: 'purple' }],
+    },
+    {
+      tag: 'STEP 6 — 検算とありがちなミス',
+      body: '<div class="calc">借方合計 60,000＋120,000＋450,000＝630,000円 ＝ 貸方合計 600,000＋30,000＝630,000円</div><div class="mistake">⚠ ①当期分（4月〜9月）の減価償却費の計上を忘れて、前期末の帳簿価額のまま売却損益を計算してしまう。②売却代金の未収分を「売掛金」としてしまう。</div>',
+      highlights: [],
+      highlightColor: 'green',
+      journalGlow: [{ id: 'd0', color: 'green' }, { id: 'd1', color: 'green' }, { id: 'd2', color: 'green' }, { id: 'c0', color: 'green' }, { id: 'c1', color: 'green' }],
+    },
+  ]}
+  relatedLesson={{ slug: 'genka-shokyaku', title: 'L2 減価償却 — 定額法と200%定率法' }}
+  client:load
 />
 
-</div></div>
+<TextExplanation
+  steps={[
+    'STEP1：年間の減価償却費を計算する。600,000円 ÷ 5年 ＝ 120,000円。',
+    'STEP2：前期末までの償却累計額と当期の月割り償却費を求める。前期12か月分で120,000円、当期は4月〜9月の6か月分で120,000円×6/12＝60,000円。',
+    'STEP3：間接法にもとづき帳簿価額を算定する。600,000円−120,000円−60,000円＝420,000円。',
+    'STEP4：売却価額450,000円と帳簿価額420,000円の差額30,000円を固定資産売却益として計上する。',
+    'STEP5：代金は月末受け取りのため、未収入金450,000円を借方に計上する。',
+  ]}
+  journal={[
+    { debit: { account: '減価償却費', amount: '60,000' }, credit: { account: '備品', amount: '600,000' } },
+    { debit: { account: '備品減価償却累計額', amount: '120,000' }, credit: { account: '固定資産売却益', amount: '30,000' } },
+    { debit: { account: '未収入金', amount: '450,000' }, credit: null },
+  ]}
+  supplement="固定資産を期中に売却する場合、決算日を待たずに売却日までの減価償却費を計上する必要があります。この期中の月割り計上を忘れると、帳簿価額が実際より大きいまま売却損益を計算してしまい、正しい損益が求められません。定額法では月割り計算がシンプルですが、200%定率法など他の償却方法でも、売却日までの期間分を按分して計上する考え方は共通です。間接法（減価償却累計額を使う方法）と直接法（取得原価から直接控除する方法）とで、貸方に計上する科目が異なる点も合わせて確認しておきましょう。"
+  mistakes="当期分（4月〜9月）の減価償却費の計上を忘れて、前期末の帳簿価額のまま売却損益を計算してしまうミスが多く見られます。また、売却代金の未収分を「売掛金」としてしまう誤りにも注意してください。売掛金は商品売買から生じた債権専用の科目で、固定資産の売却代金の未収分には「未収入金」を使います。"
+  relatedLesson={{ slug: 'genka-shokyaku', title: 'L2 減価償却 — 定額法と200%定率法' }}
+  client:load
+/>
 
-<RevealSection label="解説を表示" targetId="q1-3-explanation" client:load />
-<div id="q1-3-explanation" class="reveal-panel"><div class="reveal-inner">
-
-<ol class="steps">
-<li>前期以前に発生した債権の貸倒れなので、まず貸倒引当金を取り崩す</li>
-<li>引当金残高35,000円では不足額15,000円が足りない</li>
-<li>不足分15,000円は当期の費用「貸倒損失」として処理する</li>
-</ol>
-
-貸倒引当金は「将来の貸倒れに備えてあらかじめ見積計上しておく」ものです。実際に貸倒れが発生したときは、まず引当金を取り崩し、それでも足りない分だけを新たな費用（貸倒損失）として計上します。
-
-<div class="mistake-box">
-⚠ ここで間違えやすい：当期に発生した売掛金が当期中に貸し倒れた場合は、そもそも引当金を設定していないため、全額を「貸倒損失」で処理します（引当金の取り崩しはなし）。「前期発生」か「当期発生」かで処理が変わる点を必ず確認しましょう。
-</div>
-
-<div class="related-box">
-関連知識：<a href="/boki2-shogyo-notes/lessons/kashidaore-hikiatekin/">L3 貸倒引当金 — 差額補充法</a>
-</div>
-
-</div></div>
 </div>
 
 <div class="mock-question">
-<div class="mock-question-head">
-<h3>問4　電子記録債権の譲渡（割引）</h3>
-<span class="mock-question-pts">4点</span>
-</div>
-<div class="mock-question-body">
 
-電子記録債権 ¥300,000を取引銀行で割り引き、割引料 ¥6,000が差し引かれた残額が当座預金に入金された。
-
-</div>
-
-<RevealSection label="解答を表示" targetId="q1-4-answer" client:load />
-<div id="q1-4-answer" class="reveal-panel"><div class="reveal-inner">
-
-<Journal
-  caption="仕訳"
-  debit={[{ account: '当座預金', amount: 294000 }, { account: '電子記録債権売却損', amount: 6000 }]}
-  credit={[{ account: '電子記録債権', amount: 300000 }]}
+<GuidedExplanation
+  questionNumber="問3"
+  questionTitle="貸倒れの処理（前期発生の売掛金）"
+  points={4}
+  problemSegments={[
+    { id: 's1', text: '前期に発生した', isHighlightable: true },
+    { id: 's2', text: '得意先ひかり商店に対する', isHighlightable: false },
+    { id: 's3', text: '売掛金 ¥50,000', isHighlightable: true },
+    { id: 's4', text: 'が貸し倒れた', isHighlightable: true },
+    { id: 's5', text: '。なお、', isHighlightable: false },
+    { id: 's6', text: '貸倒引当金の残高は ¥35,000', isHighlightable: true },
+    { id: 's7', text: 'である。', isHighlightable: false },
+  ]}
+  journal={[
+    { debit: { account: '貸倒引当金', amount: '35,000' }, credit: { account: '売掛金', amount: '50,000' } },
+    { debit: { account: '貸倒損失', amount: '15,000' }, credit: null },
+  ]}
+  steps={[
+    {
+      tag: 'STEP 1 — 発生時期を確認する',
+      body: '<p>「前期に発生した」債権の貸倒れなので、決算時にあらかじめ見積計上しておいた<strong>貸倒引当金</strong>をまず取り崩します。当期中に発生した債権の貸倒れであれば、引当金は設定されていないため、この処理にはなりません。</p>',
+      highlights: ['s1'],
+      highlightColor: 'green',
+      journalGlow: [{ id: 'd0', color: 'green' }],
+    },
+    {
+      tag: 'STEP 2 — 貸倒額と引当金残高を比較する',
+      body: '<div class="calc">貸倒額 50,000円 − 引当金残高 35,000円 ＝ 15,000円（不足額）</div><p>売掛金50,000円の貸倒れに対して、引当金の残高35,000円では足りません。この不足額を別途費用として処理する必要があります。</p>',
+      highlights: ['s3', 's6'],
+      highlightColor: 'blue',
+      journalGlow: [{ id: 'd0', color: 'blue' }, { id: 'c0', color: 'blue' }],
+    },
+    {
+      tag: 'STEP 3 — 仕訳を組み立てる',
+      body: '<p>引当金35,000円を取り崩し（借方）、不足する15,000円は当期の費用「<strong>貸倒損失</strong>」として借方に計上します。貸方は売掛金50,000円の減少です。</p>',
+      highlights: ['s4'],
+      highlightColor: 'amber',
+      journalGlow: [{ id: 'd1', color: 'amber' }],
+    },
+    {
+      tag: 'STEP 4 — 検算とありがちなミス',
+      body: '<div class="calc">借方合計 35,000＋15,000＝50,000円 ＝ 貸方 売掛金50,000円</div><div class="mistake">⚠ 当期に発生した売掛金が当期中に貸し倒れた場合は、そもそも引当金を設定していないため、全額を「貸倒損失」で処理します（引当金の取り崩しはなし）。「前期発生」か「当期発生」かを必ず確認しましょう。</div>',
+      highlights: [],
+      highlightColor: 'green',
+      journalGlow: [{ id: 'd0', color: 'green' }, { id: 'd1', color: 'green' }, { id: 'c0', color: 'green' }],
+    },
+  ]}
+  relatedLesson={{ slug: 'kashidaore-hikiatekin', title: 'L3 貸倒引当金 — 差額補充法' }}
+  client:load
 />
 
-</div></div>
+<TextExplanation
+  steps={[
+    'STEP1：前期以前に発生した債権の貸倒れなので、まず貸倒引当金を取り崩す。',
+    'STEP2：引当金残高35,000円と貸倒額50,000円を比較し、不足額15,000円を求める。',
+    'STEP3：不足分15,000円は当期の費用「貸倒損失」として処理する。',
+  ]}
+  journal={[
+    { debit: { account: '貸倒引当金', amount: '35,000' }, credit: { account: '売掛金', amount: '50,000' } },
+    { debit: { account: '貸倒損失', amount: '15,000' }, credit: null },
+  ]}
+  supplement="貸倒引当金は、将来発生するかもしれない貸倒れに備えて、決算時にあらかじめ見積計上しておく引当金です。実際に貸倒れが発生した際は、その債権がいつ発生したものかによって処理が変わります。前期以前に発生した債権であれば引当金の設定対象なので、まず引当金を取り崩し、不足があれば貸倒損失を追加計上します。一方、当期に発生した債権（当期の売上によって生じた売掛金など）は、その期の引当金設定の対象になっていないため、貸倒れが生じた場合は全額を貸倒損失として処理します。"
+  mistakes="当期に発生した売掛金が当期中に貸し倒れた場合、引当金の取り崩しは行わず、全額を「貸倒損失」で処理します。「前期発生」か「当期発生」かを必ず問題文で確認し、引当金を取り崩すかどうかを判断しましょう。"
+  relatedLesson={{ slug: 'kashidaore-hikiatekin', title: 'L3 貸倒引当金 — 差額補充法' }}
+  client:load
+/>
 
-<RevealSection label="解説を表示" targetId="q1-4-explanation" client:load />
-<div id="q1-4-explanation" class="reveal-panel"><div class="reveal-inner">
-
-<ol class="steps">
-<li>電子記録債権の割引は、満期日前に金融機関へ債権を譲渡する取引</li>
-<li>額面300,000円から割引料6,000円を差し引いた294,000円が入金額</li>
-<li>差し引かれた割引料は「電子記録債権売却損」（費用）として処理する</li>
-</ol>
-
-電子記録債権の割引は、約束手形の割引と同じ考え方です。満期を待たずに債権を金融機関に買い取ってもらう＝譲渡（売却）取引であるため、額面と受取額の差額は「売却損」として処理します。
-
-<div class="mistake-box">
-⚠ ここで間違えやすい：割引料を「支払利息」としてしまうミス。割引は借入ではなく債権の売却なので、利息ではなく「電子記録債権売却損」を使います（手形なら「手形売却損」）。
-</div>
-
-</div></div>
 </div>
 
 <div class="mock-question">
-<div class="mock-question-head">
-<h3>問5　法人税等の計上</h3>
-<span class="mock-question-pts">4点</span>
-</div>
-<div class="mock-question-body">
 
-決算において、当期の法人税、住民税及び事業税が ¥320,000と確定した。なお、中間申告により ¥150,000を納付済みである。
-
-</div>
-
-<RevealSection label="解答を表示" targetId="q1-5-answer" client:load />
-<div id="q1-5-answer" class="reveal-panel"><div class="reveal-inner">
-
-<Journal
-  caption="仕訳"
-  debit={[{ account: '法人税、住民税及び事業税', amount: 320000 }]}
-  credit={[{ account: '仮払法人税等', amount: 150000 }, { account: '未払法人税等', amount: 170000 }]}
+<GuidedExplanation
+  questionNumber="問4"
+  questionTitle="電子記録債権の譲渡（割引）"
+  points={4}
+  problemSegments={[
+    { id: 's1', text: '電子記録債権 ¥300,000', isHighlightable: true },
+    { id: 's2', text: 'を取引銀行で', isHighlightable: false },
+    { id: 's3', text: '割引し', isHighlightable: true },
+    { id: 's4', text: '、', isHighlightable: false },
+    { id: 's5', text: '割引料 ¥6,000', isHighlightable: true },
+    { id: 's6', text: 'が差し引かれた残額が', isHighlightable: false },
+    { id: 's7', text: '当座預金に入金', isHighlightable: true },
+    { id: 's8', text: 'された。', isHighlightable: false },
+  ]}
+  journal={[
+    { debit: { account: '当座預金', amount: '294,000' }, credit: { account: '電子記録債権', amount: '300,000' } },
+    { debit: { account: '電子記録債権売却損', amount: '6,000' }, credit: null },
+  ]}
+  steps={[
+    {
+      tag: 'STEP 1 — 債権の種類と金額を確認する',
+      body: '<p>額面300,000円の電子記録債権を保有していることを確認します。この額面金額が、貸方「電子記録債権」の減少額になります。</p>',
+      highlights: ['s1'],
+      highlightColor: 'blue',
+      journalGlow: [{ id: 'c0', color: 'blue' }],
+    },
+    {
+      tag: 'STEP 2 — 割引＝譲渡であることを理解する',
+      body: '<p>電子記録債権の「割引」は、満期日を待たずに金融機関へ債権を譲渡（売却）する取引です。約束手形の割引と同じ考え方で、借入ではなく<strong>債権の売却</strong>である点が重要です。</p>',
+      highlights: ['s3'],
+      highlightColor: 'green',
+      journalGlow: [{ id: 'c0', color: 'green' }],
+    },
+    {
+      tag: 'STEP 3 — 入金額と費用を計算する',
+      body: '<div class="calc">300,000円 − 6,000円（割引料）＝ 294,000円（当座預金への入金額）</div><p>差し引かれた割引料6,000円は、債権を額面より低い金額で売却したことによる損失なので「電子記録債権売却損」（費用）として借方に計上します。</p>',
+      highlights: ['s5', 's7'],
+      highlightColor: 'amber',
+      journalGlow: [{ id: 'd0', color: 'amber' }, { id: 'd1', color: 'amber' }],
+    },
+    {
+      tag: 'STEP 4 — 検算とありがちなミス',
+      body: '<div class="calc">借方合計 294,000＋6,000＝300,000円 ＝ 貸方 電子記録債権300,000円</div><div class="mistake">⚠ 割引料を「支払利息」としてしまうミス。割引は借入ではなく債権の売却なので、利息ではなく「電子記録債権売却損」を使います（手形の場合は「手形売却損」）。</div>',
+      highlights: [],
+      highlightColor: 'green',
+      journalGlow: [{ id: 'd0', color: 'green' }, { id: 'd1', color: 'green' }, { id: 'c0', color: 'green' }],
+    },
+  ]}
+  client:load
 />
 
-</div></div>
+<TextExplanation
+  steps={[
+    'STEP1：電子記録債権の割引は、満期日前に金融機関へ債権を譲渡する取引である。',
+    'STEP2：額面300,000円から割引料6,000円を差し引いた294,000円が当座預金への入金額となる。',
+    'STEP3：差し引かれた割引料は「電子記録債権売却損」（費用）として処理する。',
+  ]}
+  journal={[
+    { debit: { account: '当座預金', amount: '294,000' }, credit: { account: '電子記録債権', amount: '300,000' } },
+    { debit: { account: '電子記録債権売却損', amount: '6,000' }, credit: null },
+  ]}
+  supplement="電子記録債権は、手形に代わる決済手段として普及している電子上の債権です。割引の仕組みは約束手形の割引と同様で、満期日前に金融機関へ債権を譲渡し、額面と譲渡額の差額（割引料）を金融機関に支払う（＝差し引かれる）ことで早期に資金化します。手形の割引が「手形売却損」を使うのに対し、電子記録債権の割引では「電子記録債権売却損」という科目を使う点が異なります。どちらも「割引＝債権の売却」という本質は同じなので、セットで覚えておくと整理しやすくなります。"
+  mistakes="割引料を「支払利息」として処理してしまうミスが目立ちます。割引は金融機関からの借入ではなく、あくまで債権の売却取引です。額面と受取額の差額は利息ではなく「電子記録債権売却損」（手形なら「手形売却損」）として処理します。"
+  client:load
+/>
 
-<RevealSection label="解説を表示" targetId="q1-5-explanation" client:load />
-<div id="q1-5-explanation" class="reveal-panel"><div class="reveal-inner">
-
-<ol class="steps">
-<li>借方の「法人税、住民税及び事業税」は年間の確定額320,000円を全額計上する</li>
-<li>中間納付150,000円は、納付時に「仮払法人税等」（資産）として計上済み</li>
-<li>確定額と中間納付額の差額170,000円は、決算日時点でまだ納めていないため「未払法人税等」（負債）</li>
-</ol>
-
-法人税等は「年間の確定額」をいったん全額費用計上し、すでに納めた中間納付分（仮払法人税等）を取り崩して、差額を未払いとして負債計上する、という2段構えで処理します。
-
-<div class="mistake-box">
-⚠ ここで間違えやすい：借方の費用科目を差額の170,000円にしてしまうミス。借方に計上する「法人税、住民税及び事業税」は必ず年間の確定額（320,000円）であり、差額ではありません。
 </div>
 
-</div></div>
+<div class="mock-question">
+
+<GuidedExplanation
+  questionNumber="問5"
+  questionTitle="法人税等の計上"
+  points={4}
+  problemSegments={[
+    { id: 's1', text: '決算において、当期の', isHighlightable: false },
+    { id: 's2', text: '法人税、住民税及び事業税が ¥320,000と確定', isHighlightable: true },
+    { id: 's3', text: 'した。なお、', isHighlightable: false },
+    { id: 's4', text: '中間申告により ¥150,000を納付済み', isHighlightable: true },
+    { id: 's5', text: 'である。', isHighlightable: false },
+  ]}
+  journal={[
+    { debit: { account: '法人税、住民税及び事業税', amount: '320,000' }, credit: { account: '仮払法人税等', amount: '150,000' } },
+    { debit: null, credit: { account: '未払法人税等', amount: '170,000' } },
+  ]}
+  steps={[
+    {
+      tag: 'STEP 1 — 確定額を読み取る',
+      body: '<p>当期の法人税、住民税及び事業税の確定額320,000円を読み取ります。この金額は、借方「法人税、住民税及び事業税」として<strong>全額</strong>計上します。中間納付の有無にかかわらず、借方は必ず年間の確定額です。</p>',
+      highlights: ['s2'],
+      highlightColor: 'blue',
+      journalGlow: [{ id: 'd0', color: 'blue' }],
+    },
+    {
+      tag: 'STEP 2 — 中間納付額を確認する',
+      body: '<p>中間申告時にすでに納付した150,000円は、その時点で「仮払法人税等」（資産）として計上されています。決算時にこの仮払分を取り崩し、貸方に計上します。</p>',
+      highlights: ['s4'],
+      highlightColor: 'green',
+      journalGlow: [{ id: 'c0', color: 'green' }],
+    },
+    {
+      tag: 'STEP 3 — 差額を計算する',
+      body: '<div class="calc">320,000円（確定額）− 150,000円（中間納付額）＝ 170,000円</div><p>確定額と中間納付額の差額170,000円は、決算日時点でまだ納めていない金額なので「未払法人税等」（負債）として貸方に計上します。</p>',
+      highlights: [],
+      highlightColor: 'amber',
+      journalGlow: [{ id: 'c1', color: 'amber' }],
+    },
+    {
+      tag: 'STEP 4 — 検算とありがちなミス',
+      body: '<div class="calc">借方 320,000円 ＝ 貸方 150,000円 ＋ 170,000円</div><div class="mistake">⚠ 借方の費用科目を差額の170,000円にしてしまうミス。借方に計上する「法人税、住民税及び事業税」は必ず年間の確定額（320,000円）であり、差額ではありません。</div>',
+      highlights: [],
+      highlightColor: 'green',
+      journalGlow: [{ id: 'd0', color: 'green' }, { id: 'c0', color: 'green' }, { id: 'c1', color: 'green' }],
+    },
+  ]}
+  client:load
+/>
+
+<TextExplanation
+  steps={[
+    'STEP1：借方の「法人税、住民税及び事業税」は年間の確定額320,000円を全額計上する。',
+    'STEP2：中間納付150,000円は、納付時に「仮払法人税等」（資産）として計上済みなので、これを取り崩す。',
+    'STEP3：確定額と中間納付額の差額170,000円は、決算日時点でまだ納めていないため「未払法人税等」（負債）として計上する。',
+  ]}
+  journal={[
+    { debit: { account: '法人税、住民税及び事業税', amount: '320,000' }, credit: { account: '仮払法人税等', amount: '150,000' } },
+    { debit: null, credit: { account: '未払法人税等', amount: '170,000' } },
+  ]}
+  supplement="法人税等の決算整理は「年間の確定額をいったん全額費用計上し、すでに納めた中間納付分を取り崩して、差額を未払いとして負債計上する」という2段構えの処理です。中間申告・中間納付は、前年度の税額などをもとにあらかじめ半年分程度を概算で納める制度で、納付時には「仮払法人税等」という資産科目で処理しておきます。決算で年間の税額が確定した段階で、この仮払分と確定額の差額を「未払法人税等」として計上し、確定申告時に実際に納付します。"
+  mistakes="借方の費用科目を差額の170,000円にしてしまうミスが多く見られます。借方に計上する「法人税、住民税及び事業税」は必ず年間の確定額を全額計上し、中間納付額や未払額との差額調整は貸方側で行います。"
+  client:load
+/>
+
 </div>
 
 </div>
@@ -258,8 +426,53 @@ import RevealSection from '../../islands/RevealSection.tsx';
   rows={[['前期末残高', '2,000,000', '400,000', '80,000', '520,000', '3,000,000']]}
 />
 
-<RevealSection label="解答を表示" targetId="q2-answer" client:load />
-<div id="q2-answer" class="reveal-panel"><div class="reveal-inner">
+<GuidedExplanation
+  questionNumber="第2問"
+  questionTitle="決算整理事項ごとに変動計算書の空欄を埋める"
+  points={20}
+  problemSegments={[
+    { id: 's1', text: '利益準備金の積立て ¥18,000、株主配当金 ¥180,000の処分', isHighlightable: true },
+    { id: 's2', text: '当期純利益 ¥460,000', isHighlightable: true },
+    { id: 's3', text: '新株100株を1株 ¥5,000で発行し、資本金・資本準備金に半額ずつ計上', isHighlightable: true },
+  ]}
+  journal={[
+    { debit: { account: '繰越利益剰余金', amount: '198,000' }, credit: { account: '利益準備金', amount: '18,000' } },
+    { debit: null, credit: { account: '未払配当金', amount: '180,000' } },
+    { debit: { account: '当座預金', amount: '500,000' }, credit: { account: '資本金', amount: '250,000' } },
+    { debit: null, credit: { account: '資本準備金', amount: '250,000' } },
+  ]}
+  steps={[
+    {
+      tag: 'STEP 1 — 剰余金の配当の仕訳を確認する',
+      body: '<p>繰越利益剰余金を原資として、利益準備金18,000円の積立てと配当金180,000円の支払いを行います。</p><div class="calc">繰越利益剰余金の減少額 ＝ 18,000円 ＋ 180,000円 ＝ 198,000円</div><p>これが変動計算書の（ア）利益準備金＋18,000、（イ）繰越利益剰余金△198,000、（ウ）株主資本合計△180,000に対応します。</p>',
+      highlights: ['s1'],
+      highlightColor: 'blue',
+      journalGlow: [{ id: 'd0', color: 'blue' }, { id: 'c0', color: 'blue' }, { id: 'c1', color: 'blue' }],
+    },
+    {
+      tag: 'STEP 2 — 当期純利益の計上を確認する',
+      body: '<p>当期純利益460,000円は、そのまま繰越利益剰余金・株主資本合計を増加させます。これが（エ）（オ）に対応します。</p>',
+      highlights: ['s2'],
+      highlightColor: 'green',
+      journalGlow: [],
+    },
+    {
+      tag: 'STEP 3 — 新株発行の仕訳を確認する',
+      body: '<div class="calc">払込金合計 ＝ 100株 × 5,000円 ＝ 500,000円</div><p>会社法の原則どおり、半額の250,000円ずつを資本金・資本準備金に計上します。これが（カ）（キ）（ク）に対応します。</p>',
+      highlights: ['s3'],
+      highlightColor: 'amber',
+      journalGlow: [{ id: 'd2', color: 'amber' }, { id: 'c2', color: 'amber' }, { id: 'c3', color: 'amber' }],
+    },
+    {
+      tag: 'STEP 4 — 当期末残高を計算し検算する',
+      body: '<div class="calc">繰越利益剰余金の当期末残高（コ）＝ 520,000円 − 198,000円 ＋ 460,000円 ＝ 782,000円</div><div class="mistake">⚠ （イ）で配当金180,000円だけを引いてしまい、利益準備金の積立て18,000円を引き忘れるミスが非常に多いです。繰越利益剰余金は「配当金として社外に出ていく分」と「利益準備金として社内に留保される分」の両方が減少要因になります。</div>',
+      highlights: [],
+      highlightColor: 'green',
+      journalGlow: [{ id: 'd0', color: 'green' }, { id: 'c0', color: 'green' }, { id: 'c1', color: 'green' }, { id: 'd2', color: 'green' }, { id: 'c2', color: 'green' }, { id: 'c3', color: 'green' }],
+    },
+  ]}
+  client:load
+/>
 
 <DataTable
   caption="株主資本等変動計算書（完成版）"
@@ -274,31 +487,29 @@ import RevealSection from '../../islands/RevealSection.tsx';
   ]}
 />
 
-</div></div>
-
-<RevealSection label="解説を表示" targetId="q2-explanation" client:load />
-<div id="q2-explanation" class="reveal-panel"><div class="reveal-inner">
-
-<ol class="steps">
-<li>（ア）利益準備金の積立て ＝ 18,000円（資料どおりそのまま計上）</li>
-<li>（イ）繰越利益剰余金の減少 ＝ 配当金180,000円 ＋ 利益準備金積立て18,000円 ＝ △198,000円。配当金だけでなく、積立てにより社内の利益準備金へ振り替わる分も繰越利益剰余金から出ていく点に注意</li>
-<li>（ウ）剰余金の配当による株主資本合計の変動 ＝ 利益準備金＋18,000円 と 繰越利益剰余金△198,000円 の合計 ＝ △180,000円。利益準備金の積立ては内部の振替なので、株主資本合計としては配当金の分だけが外部（株主）へ流出する</li>
-<li>（エ）（オ）当期純利益460,000円は、そのまま繰越利益剰余金・株主資本合計の増加になる</li>
-<li>（カ）（キ）新株の発行：払込金合計 ＝ 100株 × 5,000円 ＝ 500,000円。会社法の原則どおり半額の250,000円ずつを資本金・資本準備金に計上する</li>
-<li>（コ）繰越利益剰余金の当期末残高 ＝ 前期末520,000円 ＋ 当期変動額262,000円（△198,000円＋460,000円）＝ 782,000円</li>
-</ol>
-
-最後に検算をしておくと安心です。当期末残高の合計 ＝ 2,250,000円 ＋ 650,000円 ＋ 98,000円 ＋ 782,000円 ＝ 3,780,000円となり、株主資本合計の当期末残高と一致します。
-
-<div class="mistake-box">
-⚠ ここで間違えやすい：（イ）で配当金180,000円だけを引いてしまい、利益準備金の積立て18,000円を引き忘れるミスが非常に多いです。繰越利益剰余金は「配当金として社外に出ていく分」と「利益準備金として社内に留保される分」の両方が減少要因になることを覚えておきましょう。
-</div>
-
 <Point>
   株主資本等変動計算書の基本は「各項目の前期末残高＋当期変動額＝当期末残高」という横の関係と、「株主資本合計＝資本金＋資本準備金＋利益準備金＋繰越利益剰余金（＋その他の項目）」という縦の関係の両方が常に成り立つことです。空欄を埋めたら、必ずこの2方向で検算しましょう。
 </Point>
 
-</div></div>
+<TextExplanation
+  steps={[
+    '（ア）利益準備金の積立て ＝ 18,000円（資料どおりそのまま計上）。',
+    '（イ）繰越利益剰余金の減少 ＝ 配当金180,000円 ＋ 利益準備金積立て18,000円 ＝ △198,000円。配当金だけでなく、積立てにより社内の利益準備金へ振り替わる分も繰越利益剰余金から出ていく点に注意。',
+    '（ウ）剰余金の配当による株主資本合計の変動 ＝ 利益準備金＋18,000円と繰越利益剰余金△198,000円の合計 ＝ △180,000円。利益準備金の積立ては内部の振替なので、株主資本合計としては配当金の分だけが外部（株主）へ流出する。',
+    '（エ）（オ）当期純利益460,000円は、そのまま繰越利益剰余金・株主資本合計の増加になる。',
+    '（カ）（キ）新株の発行：払込金合計 ＝ 100株 × 5,000円 ＝ 500,000円。会社法の原則どおり半額の250,000円ずつを資本金・資本準備金に計上する。',
+    '（コ）繰越利益剰余金の当期末残高 ＝ 前期末520,000円 ＋ 当期変動額262,000円（△198,000円＋460,000円）＝ 782,000円。',
+  ]}
+  journal={[
+    { debit: { account: '繰越利益剰余金', amount: '198,000' }, credit: { account: '利益準備金', amount: '18,000' } },
+    { debit: null, credit: { account: '未払配当金', amount: '180,000' } },
+    { debit: { account: '当座預金', amount: '500,000' }, credit: { account: '資本金', amount: '250,000' } },
+    { debit: null, credit: { account: '資本準備金', amount: '250,000' } },
+  ]}
+  supplement="最後に検算をしておくと安心です。当期末残高の合計 ＝ 2,250,000円 ＋ 650,000円 ＋ 98,000円 ＋ 782,000円 ＝ 3,780,000円となり、株主資本合計の当期末残高と一致します。株主資本等変動計算書は、貸借対照表の純資産の部の「内訳の動き」を1年間分まとめて示す書類です。各列（資本金・資本準備金・利益準備金・繰越利益剰余金）は、それぞれ独立した勘定の動きをそのまま転記したものであり、仕訳を1つずつ丁寧に起こしてから埋めていけば、複雑に見えても機械的に解くことができます。"
+  mistakes="（イ）で配当金180,000円だけを引いてしまい、利益準備金の積立て18,000円を引き忘れるミスが非常に多いです。繰越利益剰余金は「配当金として社外に出ていく分」と「利益準備金として社内に留保される分」の両方が減少要因になることを覚えておきましょう。"
+  client:load
+/>
 
 </div>
 
@@ -341,39 +552,64 @@ import RevealSection from '../../islands/RevealSection.tsx';
 5. 保険料のうち ¥4,000は翌期分の前払いである。
 6. 給料の未払い分が ¥8,000ある。
 
-<RevealSection label="解答を表示" targetId="q3-answer" client:load />
-<div id="q3-answer" class="reveal-panel"><div class="reveal-inner">
-
-<Journal
-  caption="① 売上原価の算定（しーくり くりしー）"
-  debit={[{ account: '仕入', amount: 40000 }, { account: '繰越商品', amount: 55000 }]}
-  credit={[{ account: '繰越商品', amount: 40000 }, { account: '仕入', amount: 55000 }]}
-/>
-
-<Journal
-  caption="② 貸倒引当金の設定"
-  debit={[{ account: '貸倒引当金繰入', amount: 4000 }]}
-  credit={[{ account: '貸倒引当金', amount: 4000 }]}
-  note="見積額＝350,000円×2％＝7,000円。繰入額＝7,000円−3,000円＝4,000円"
-/>
-
-<Journal
-  caption="③④ 減価償却"
-  debit={[{ account: '減価償却費', amount: 140000 }]}
-  credit={[{ account: '建物減価償却累計額', amount: 40000 }, { account: '備品減価償却累計額', amount: 100000 }]}
-  note="建物：1,200,000円÷30年＝40,000円　備品：500,000円÷5年＝100,000円"
-/>
-
-<Journal
-  caption="⑤ 保険料の前払い"
-  debit={[{ account: '前払保険料', amount: 4000 }]}
-  credit={[{ account: '保険料', amount: 4000 }]}
-/>
-
-<Journal
-  caption="⑥ 給料の未払い"
-  debit={[{ account: '給料', amount: 8000 }]}
-  credit={[{ account: '未払給料', amount: 8000 }]}
+<GuidedExplanation
+  questionNumber="第3問"
+  questionTitle="決算整理事項を1つずつ処理して精算表を仕上げる"
+  points={20}
+  problemSegments={[
+    { id: 's1', text: '期末商品棚卸高 ¥55,000（売上原価は仕入の行で算定）', isHighlightable: true },
+    { id: 's2', text: '売掛金の期末残高に対して2%の貸倒引当金（差額補充法）', isHighlightable: true },
+    { id: 's3', text: '建物・備品の減価償却（定額法）', isHighlightable: true },
+    { id: 's4', text: '保険料の前払い ¥4,000、給料の未払い ¥8,000', isHighlightable: true },
+  ]}
+  journal={[
+    { debit: { account: '仕入', amount: '40,000' }, credit: { account: '繰越商品', amount: '40,000' } },
+    { debit: { account: '繰越商品', amount: '55,000' }, credit: { account: '仕入', amount: '55,000' } },
+    { debit: { account: '貸倒引当金繰入', amount: '4,000' }, credit: { account: '貸倒引当金', amount: '4,000' } },
+    { debit: { account: '減価償却費', amount: '140,000' }, credit: { account: '建物減価償却累計額', amount: '40,000' } },
+    { debit: null, credit: { account: '備品減価償却累計額', amount: '100,000' } },
+    { debit: { account: '前払保険料', amount: '4,000' }, credit: { account: '保険料', amount: '4,000' } },
+    { debit: { account: '給料', amount: '8,000' }, credit: { account: '未払給料', amount: '8,000' } },
+  ]}
+  steps={[
+    {
+      tag: 'STEP 1 — 売上原価を算定する（しーくり くりしー）',
+      body: '<div class="calc">売上原価 ＝ 仕入780,000円 ＋ 期首商品40,000円 − 期末商品55,000円 ＝ 765,000円</div><p>期首商品40,000円を仕入に振り替え、期末商品55,000円を仕入から差し引きます。</p>',
+      highlights: ['s1'],
+      highlightColor: 'blue',
+      journalGlow: [{ id: 'd0', color: 'blue' }, { id: 'c0', color: 'blue' }, { id: 'd1', color: 'blue' }, { id: 'c1', color: 'blue' }],
+    },
+    {
+      tag: 'STEP 2 — 貸倒引当金を設定する',
+      body: '<div class="calc">見積額 ＝ 売掛金350,000円 × 2％ ＝ 7,000円\n繰入額 ＝ 7,000円 − 整理前残高3,000円 ＝ 4,000円</div><p>差額補充法では、見積額と整理前残高の差額だけを繰り入れます。</p>',
+      highlights: ['s2'],
+      highlightColor: 'green',
+      journalGlow: [{ id: 'd2', color: 'green' }, { id: 'c2', color: 'green' }],
+    },
+    {
+      tag: 'STEP 3 — 減価償却費を計算する',
+      body: '<div class="calc">建物：1,200,000円 ÷ 30年 ＝ 40,000円\n備品：500,000円 ÷ 5年 ＝ 100,000円\n合計：140,000円</div><p>精算表では、建物と備品の減価償却費を「減価償却費」1行にまとめて記入します。</p>',
+      highlights: ['s3'],
+      highlightColor: 'amber',
+      journalGlow: [{ id: 'd3', color: 'amber' }, { id: 'c3', color: 'amber' }, { id: 'c4', color: 'amber' }],
+    },
+    {
+      tag: 'STEP 4 — 費用の期間対応を処理する',
+      body: '<p>保険料のうち4,000円は翌期分なので「前払保険料」として資産に振り替え、給料の未払い8,000円は当期の費用として追加計上します。</p>',
+      highlights: ['s4'],
+      highlightColor: 'rose',
+      journalGlow: [{ id: 'd4', color: 'rose' }, { id: 'c4', color: 'rose' }, { id: 'd5', color: 'rose' }, { id: 'c5', color: 'rose' }],
+    },
+    {
+      tag: 'STEP 5 — 当期純利益を計算し検算する',
+      body: '<div class="calc">当期純利益 ＝ 収益合計1,500,000円 − 費用合計961,000円 ＝ 539,000円</div><div class="mistake">⚠ ①建物と備品の減価償却費を別の行に分けて書いてしまう（精算表では「減価償却費」1勘定にまとめる）。②貸倒引当金繰入を見積額7,000円そのまま計上し、整理前残高3,000円を差し引き忘れる。</div>',
+      highlights: [],
+      highlightColor: 'green',
+      journalGlow: [{ id: 'd0', color: 'green' }, { id: 'c0', color: 'green' }, { id: 'd1', color: 'green' }, { id: 'c1', color: 'green' }, { id: 'd2', color: 'green' }, { id: 'c2', color: 'green' }, { id: 'd3', color: 'green' }, { id: 'c3', color: 'green' }],
+    },
+  ]}
+  relatedLesson={{ slug: 'shohin-baibai', title: 'L1 商品売買と売上原価' }}
+  client:load
 />
 
 <DataTable
@@ -406,33 +642,31 @@ import RevealSection from '../../islands/RevealSection.tsx';
   ]}
 />
 
-</div></div>
-
-<RevealSection label="解説を表示" targetId="q3-explanation" client:load />
-<div id="q3-explanation" class="reveal-panel"><div class="reveal-inner">
-
-<ol class="steps">
-<li>売上原価の算定：仕入780,000円＋期首商品40,000円−期末商品55,000円＝765,000円</li>
-<li>貸倒引当金：見積額＝売掛金350,000円×2％＝7,000円。整理前残高3,000円との差額4,000円だけを繰り入れる（差額補充法）</li>
-<li>減価償却費：建物40,000円＋備品100,000円＝140,000円。精算表では「減価償却費」1行にまとめて記入する</li>
-<li>保険料の前払い4,000円を差し引き、給料の未払い8,000円を足す（費用の期間対応）</li>
-<li>当期純利益＝収益合計1,500,000円−費用合計961,000円＝539,000円</li>
-</ol>
-
-精算表を解くときは、決算整理仕訳を一つずつ丁寧に起こしてから、修正記入欄・損益計算書欄・貸借対照表欄へ機械的に転記していくのが確実です。特に「しーくり くりしー」と減価償却費の合算は頻出パターンなので、型として覚えておきましょう。
-
-<div class="mistake-box">
-⚠ ここで間違えやすい：①建物と備品の減価償却費を別の行に分けて書いてしまう（精算表では「減価償却費」1勘定にまとめる）。②貸倒引当金繰入を見積額7,000円そのまま計上してしまい、整理前残高3,000円を差し引き忘れる。
-</div>
-
-<div class="related-box">
-関連知識：<a href="/boki2-shogyo-notes/lessons/shohin-baibai/">L1 商品売買と売上原価</a>／<a href="/boki2-shogyo-notes/lessons/genka-shokyaku/">L2 減価償却</a>／<a href="/boki2-shogyo-notes/lessons/kashidaore-hikiatekin/">L3 貸倒引当金</a>
-</div>
-
 <Point>
   精算表を仕上げたら、必ず借方合計と貸方合計が一致するかを検算しましょう。損益計算書欄・貸借対照表欄それぞれで借方合計＝貸方合計になっていれば、決算整理仕訳に抜け漏れがない証拠です。
 </Point>
 
-</div></div>
+<TextExplanation
+  steps={[
+    '売上原価の算定：仕入780,000円＋期首商品40,000円−期末商品55,000円＝765,000円。',
+    '貸倒引当金：見積額＝売掛金350,000円×2％＝7,000円。整理前残高3,000円との差額4,000円だけを繰り入れる（差額補充法）。',
+    '減価償却費：建物40,000円＋備品100,000円＝140,000円。精算表では「減価償却費」1行にまとめて記入する。',
+    '保険料の前払い4,000円を差し引き、給料の未払い8,000円を足す（費用の期間対応）。',
+    '当期純利益＝収益合計1,500,000円−費用合計961,000円＝539,000円。',
+  ]}
+  journal={[
+    { debit: { account: '仕入', amount: '40,000' }, credit: { account: '繰越商品', amount: '40,000' } },
+    { debit: { account: '繰越商品', amount: '55,000' }, credit: { account: '仕入', amount: '55,000' } },
+    { debit: { account: '貸倒引当金繰入', amount: '4,000' }, credit: { account: '貸倒引当金', amount: '4,000' } },
+    { debit: { account: '減価償却費', amount: '140,000' }, credit: { account: '建物減価償却累計額', amount: '40,000' } },
+    { debit: null, credit: { account: '備品減価償却累計額', amount: '100,000' } },
+    { debit: { account: '前払保険料', amount: '4,000' }, credit: { account: '保険料', amount: '4,000' } },
+    { debit: { account: '給料', amount: '8,000' }, credit: { account: '未払給料', amount: '8,000' } },
+  ]}
+  supplement="精算表を解くときは、決算整理仕訳を一つずつ丁寧に起こしてから、修正記入欄・損益計算書欄・貸借対照表欄へ機械的に転記していくのが確実です。特に「しーくり くりしー」と減価償却費の合算は頻出パターンなので、型として覚えておきましょう。精算表は本来、複式簿記の帳簿を締め切る前に全体を一覧できるようにした「試算表」の発展形であり、実務でも決算作業の下書きとして広く使われています。"
+  mistakes="建物と備品の減価償却費を別の行に分けて書いてしまうミス（精算表では「減価償却費」1勘定にまとめる）と、貸倒引当金繰入を見積額7,000円そのまま計上し、整理前残高3,000円を差し引き忘れるミスの両方に注意しましょう。"
+  relatedLesson={{ slug: 'shohin-baibai', title: 'L1 商品売買と売上原価' }}
+  client:load
+/>
 
 </div>
