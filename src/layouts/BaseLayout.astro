@@ -44,6 +44,8 @@ const { title, description } = Astro.props;
       if (reduced || !('IntersectionObserver' in window)) {
         targets.forEach((t) => t.classList.add('in-view'));
       } else {
+        // rootMarginは下方向にプラスで広げ、画面のすぐ下にある要素も初回描画時点で表示する
+        // （末尾が画面下端ぎりぎりに来ただけで永久に非表示のままになるのを防ぐ）
         const io = new IntersectionObserver(
           (entries) => {
             for (const e of entries) {
@@ -53,7 +55,7 @@ const { title, description } = Astro.props;
               }
             }
           },
-          { threshold: 0.15, rootMargin: '0px 0px -40px 0px' }
+          { threshold: 0, rootMargin: '0px 0px 150px 0px' }
         );
         targets.forEach((t) => io.observe(t));
       }
