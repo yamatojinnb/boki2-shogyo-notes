@@ -2,35 +2,66 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { base } from '../lib/site';
+import { formatDate } from '../lib/ifrs';
 
 const lessons = (await getCollection('lessons')).sort((a, b) => a.data.order - b.data.order);
 // インデックスタブの色をレッスンごとにローテーション
 const tabColors = ['var(--ledger)', 'var(--debit)', 'var(--credit)', 'var(--gold)'];
+
+const ifrsArticles = (await getCollection('ifrs')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.order - b.data.order
+);
+const latestIfrs = ifrsArticles[0];
 ---
 
 <BaseLayout
-  title="商業簿記ノート｜簿記2級・商業簿記を図解とアニメーションで学ぶ"
-  description="日商簿記2級・商業簿記の論点を、仕訳・T字勘定の図解と触って学べるインタラクティブ教材でまとめた学習ノート。売上原価、減価償却、貸倒引当金、銀行勘定調整表、有価証券を収録。"
+  title="会計ノート｜簿記2級とIFRSアップデートを学ぶ"
+  description="簿記2級の学習ノートとIFRS基準改正の実務解説。図解とアニメーションで会計を学ぶ。"
 >
   <section class="hero container" data-animate>
-    <span class="hero-kicker">日商簿記2級 — 商業簿記</span>
-    <h1>商業簿記ノート</h1>
-    <p class="hero-kana">しょうぎょうぼきのーと</p>
+    <span class="hero-kicker">ACCOUNTING NOTES</span>
+    <h1>会計ノート</h1>
+    <p class="hero-kana">かいけいのーと</p>
     <div class="hero-rule" aria-hidden="true"></div>
     <p class="hero-lead">
-      会計実務のなかで学び直した簿記2級の論点を、総勘定元帳をひらく気持ちでまとめました。
-      <span class="t-debit">借方は藍</span>、<span class="t-credit">貸方は朱</span>。
-      図解とアニメーションで、仕訳の「流れ」ごと覚えていきます。
+      会計実務のなかで学び直した知識をまとめています。日商簿記2級の基礎を仕訳とアニメーションで、IFRSの制度改正を実務者向けの解説記事で。
+      <span class="t-debit">借方は藍</span>、<span class="t-credit">貸方は朱</span>――色分けの流儀はどちらにも共通です。
     </p>
     <div class="hero-badges">
       <span>仕訳で理解</span>
       <span>T字勘定の図解</span>
-      <span>触って学べる教材つき</span>
+      <span>IFRS実務解説</span>
+    </div>
+  </section>
+
+  <section class="container" data-animate>
+    <div class="section-cards">
+      <a class="section-card" href={`${base}#lessons`}>
+        <span class="section-card-kicker">日商簿記2級 — 商業簿記</span>
+        <h2>簿記2級 商業簿記</h2>
+        <p>仕訳とT字勘定の図解、触って学べるインタラクティブ教材で5つの重要論点を学ぶ。</p>
+        <span class="section-card-link">レッスン一覧を見る ↓</span>
+      </a>
+      <a class="section-card" href={`${base}ifrs/`}>
+        <span class="section-card-kicker">ACCOUNTING NOTES — IFRS</span>
+        <h2>IFRS アップデート</h2>
+        <p>国際財務報告基準の新設・改訂を、実務への影響とあわせて解説する記事シリーズ。</p>
+        {
+          latestIfrs && (
+            <span class="section-card-latest">
+              最新記事：{latestIfrs.data.title}
+              <br />
+              <span class="amt">{formatDate(latestIfrs.data.date)}</span>
+            </span>
+          )
+        }
+        <span class="section-card-link">記事一覧を見る →</span>
+      </a>
     </div>
   </section>
 
   <section id="lessons" class="container" data-animate>
-    <h2 class="section-title">レッスン一覧</h2>
+    <h2 class="section-title">簿記2級 レッスン一覧</h2>
     <ol class="card-grid">
       {
         lessons.map((l, i) => (

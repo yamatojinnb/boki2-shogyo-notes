@@ -1,0 +1,25 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import StatusBadge from './StatusBadge.astro';
+import { base } from '../lib/site';
+import { formatStandardBadge, formatDate } from '../lib/ifrs';
+
+interface Props {
+  entry: CollectionEntry<'ifrs'>;
+}
+const { entry } = Astro.props;
+const d = entry.data;
+---
+
+<a class="ifrs-card" href={`${base}ifrs/${entry.id}/`} data-status={d.status}>
+  <div class="ifrs-card-head">
+    <span class="standard-badge">{formatStandardBadge(d.standard)}</span>
+    <StatusBadge status={d.status} />
+  </div>
+  <h3 class="ifrs-card-title">{d.title}</h3>
+  <p class="ifrs-card-summary">{d.summary}</p>
+  <div class="ifrs-card-meta">
+    <span>公開日 {formatDate(d.date)}</span>
+    <span>適用開始 {d.effectiveDate}</span>
+  </div>
+</a>

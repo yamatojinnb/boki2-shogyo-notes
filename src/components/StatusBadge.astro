@@ -1,0 +1,10 @@
+---
+import { STATUS_LABEL } from '../lib/ifrs';
+
+interface Props {
+  status: 'effective' | 'upcoming' | 'exposure-draft';
+}
+const { status } = Astro.props;
+---
+
+<span class={`status-badge status-${status}`}>{STATUS_LABEL[status]}</span>

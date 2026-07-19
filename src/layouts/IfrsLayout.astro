@@ -1,0 +1,82 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import StatusBadge from '../components/StatusBadge.astro';
+import { base } from '../lib/site';
+import { formatStandardBadge, formatDate } from '../lib/ifrs';
+
+interface Props {
+  article: CollectionEntry<'ifrs'>;
+  prev?: CollectionEntry<'ifrs'>;
+  next?: CollectionEntry<'ifrs'>;
+  all: CollectionEntry<'ifrs'>[];
+}
+const { article, prev, next, all } = Astro.props;
+const d = article.data;
+
+// 関連記事：同じタグを1つ以上共有する記事（自分自身は除く）
+const related = all
+  .filter((a) => a.id !== article.id && a.data.tags.some((t) => d.tags.includes(t)))
+  .slice(0, 3);
+---
+
+<BaseLayout title={`${d.title}｜会計ノート`} description={d.summary}>
+  <article class="lesson container ifrs-article">
+    <header class="lesson-head" data-animate>
+      <div class="ifrs-article-badges">
+        <span class="standard-badge">{formatStandardBadge(d.standard)}</span>
+        <StatusBadge status={d.status} />
+      </div>
+      <h1>{d.title}</h1>
+      <div class="ifrs-article-meta">
+        <span>公開日 {formatDate(d.date)}</span>
+        <span>適用開始日 {d.effectiveDate}</span>
+      </div>
+      <p class="lesson-summary">{d.summary}</p>
+    </header>
+
+    <div class="lesson-body">
+      <slot />
+    </div>
+
+    {
+      related.length > 0 && (
+        <section class="ifrs-related" aria-label="関連する他の記事">
+          <h2 class="section-title">関連する他の記事</h2>
+          <div class="ifrs-card-grid">
+            {related.map((r) => (
+              <a class="ifrs-card" href={`${base}ifrs/${r.id}/`} data-status={r.data.status}>
+                <div class="ifrs-card-head">
+                  <span class="standard-badge">{formatStandardBadge(r.data.standard)}</span>
+                  <StatusBadge status={r.data.status} />
+                </div>
+                <h3 class="ifrs-card-title">{r.data.title}</h3>
+                <p class="ifrs-card-summary">{r.data.summary}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <nav class="lesson-nav" aria-label="前後の記事">
+      {
+        prev && (
+          <a class="nav-prev" href={`${base}ifrs/${prev.id}/`}>
+            <span class="dir">← 新しい記事</span>
+            <span class="ttl">{prev.data.title}</span>
+          </a>
+        )
+      }
+      {
+        next && (
+          <a class="nav-next" href={`${base}ifrs/${next.id}/`}>
+            <span class="dir">古い記事 →</span>
+            <span class="ttl">{next.data.title}</span>
+          </a>
+        )
+      }
+      <a class="nav-index" href={`${base}ifrs/`}>IFRSアップデート一覧へ戻る</a>
+    </nav>
+  </article>
+</BaseLayout>

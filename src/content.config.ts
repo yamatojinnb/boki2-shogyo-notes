@@ -13,4 +13,19 @@ const lessons = defineCollection({
   }),
 });
 
-export const collections = { lessons };
+// IFRSアップデート記事は src/content/ifrs/*.mdx を追加するだけで一覧・タイムライン・ナビに自動反映される
+const ifrs = defineCollection({
+  loader: glob({ pattern: '**/*.mdx', base: './src/content/ifrs' }),
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+    standard: z.string(),
+    status: z.enum(['effective', 'upcoming', 'exposure-draft']),
+    effectiveDate: z.string(),
+    summary: z.string(),
+    tags: z.array(z.string()),
+    order: z.number(),
+  }),
+});
+
+export const collections = { lessons, ifrs };

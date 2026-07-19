@@ -895,6 +895,322 @@ a { color: var(--debit); }
   .sec-panel { border-radius: 10px; margin-top: .4rem; }
 }
 
+/* ============ トップページ：セクションカード（簿記2級／IFRS） ============ */
+.section-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.4rem;
+  margin-bottom: 1rem;
+}
+.section-card {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  padding: 1.8rem 1.6rem;
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: var(--ink);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.section-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 34px rgba(23, 37, 59, .13);
+}
+.section-card-kicker {
+  font-size: .72rem;
+  letter-spacing: .2em;
+  color: var(--gold);
+}
+.section-card h2 {
+  font-size: 1.4rem;
+  letter-spacing: .06em;
+}
+.section-card p {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: .9rem;
+  line-height: 1.75;
+}
+.section-card-latest {
+  margin-top: .3rem;
+  padding: .6rem .8rem;
+  background: var(--paper);
+  border-radius: 8px;
+  font-size: .8rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+.section-card-link {
+  margin-top: .4rem;
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--ledger);
+}
+
+/* ============ IFRS：バッジ ============ */
+.standard-badge {
+  display: inline-block;
+  font-family: var(--font-num);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .05em;
+  padding: .2rem .7rem;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--paper);
+}
+.status-badge {
+  display: inline-block;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  padding: .2rem .75rem;
+  border-radius: 999px;
+  color: #fff;
+}
+.status-badge.status-effective { background: var(--ledger); }
+.status-badge.status-upcoming { background: var(--debit); }
+.status-badge.status-exposure-draft { background: var(--gold); }
+
+/* ============ IFRS：記事カード一覧 ============ */
+.ifrs-list-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+}
+.ifrs-list-head .section-title {
+  margin-bottom: 0;
+  flex: 1 1 auto;
+}
+.ifrs-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.4rem;
+}
+.ifrs-card {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+  padding: 1.3rem 1.3rem 1.1rem;
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: var(--ink);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.ifrs-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 34px rgba(23, 37, 59, .13);
+}
+.ifrs-card-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  align-items: center;
+}
+.ifrs-card-title {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+.ifrs-card-summary {
+  margin: 0;
+  font-size: .85rem;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+.ifrs-card-meta {
+  margin-top: auto;
+  padding-top: .5rem;
+  border-top: 1px dashed var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+  font-size: .74rem;
+  color: var(--ink-soft);
+}
+
+/* ============ IFRS：適用タイムライン ============ */
+.timeline {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.6rem 1.4rem 1.2rem;
+}
+.timeline-legend {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.1rem;
+  margin: 0 0 1.6rem;
+  padding: 0;
+  font-size: .78rem;
+  color: var(--ink-soft);
+}
+.timeline-legend li { display: flex; align-items: center; gap: .4rem; }
+.timeline-legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.timeline-track {
+  position: relative;
+  height: 74px;
+  margin: 0 10px;
+}
+.timeline-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--rule);
+  transform: translateY(-50%);
+}
+.timeline-dot {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: var(--ink);
+}
+.timeline-dot-mark {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--dot-color, var(--ledger));
+  border: 3px solid var(--white);
+  box-shadow: 0 0 0 1px var(--dot-color, var(--ledger));
+  transition: transform .2s ease;
+}
+.timeline-dot:hover .timeline-dot-mark,
+.timeline-dot:focus-visible .timeline-dot-mark {
+  transform: scale(1.25);
+}
+.timeline-dot-label {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .1rem;
+  padding: .3rem .6rem;
+  background: var(--ink);
+  color: var(--paper);
+  border-radius: 8px;
+  font-size: .72rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s ease;
+}
+.timeline-dot:hover .timeline-dot-label,
+.timeline-dot:focus-visible .timeline-dot-label {
+  opacity: 1;
+}
+.timeline-years {
+  position: relative;
+  height: 1.2rem;
+  margin: .4rem 10px 0;
+}
+.timeline-years span {
+  position: absolute;
+  transform: translateX(-50%);
+  font-family: var(--font-num);
+  font-size: .78rem;
+  color: var(--ink-soft);
+}
+
+/* ============ IFRS：記事ヘッダー・関連記事 ============ */
+.ifrs-article-badges {
+  display: flex;
+  gap: .5rem;
+  flex-wrap: wrap;
+  margin-bottom: .8rem;
+}
+.ifrs-article-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  margin-top: .6rem;
+  font-size: .82rem;
+  color: var(--ink-soft);
+}
+.ifrs-related {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--rule);
+}
+
+/* ============ IFRS：改正前後の比較表 ============ */
+.comparison-table {
+  margin: 1.8rem 0;
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.comparison-caption {
+  padding: .5rem 1rem;
+  background: var(--ledger-bg);
+  color: var(--ledger);
+  font-size: .82rem;
+  font-weight: 700;
+  border-bottom: 1px solid var(--rule);
+}
+.comparison-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .88rem;
+}
+.comparison-table th,
+.comparison-table td {
+  padding: .6rem .9rem;
+  border-bottom: 1px solid var(--rule);
+  text-align: left;
+  vertical-align: top;
+}
+.comparison-table tr:last-child td { border-bottom: none; }
+.comparison-table th.ct-item { background: var(--paper); color: var(--ink-soft); width: 22%; }
+.comparison-table th.ct-before { background: var(--credit-bg); color: var(--credit); }
+.comparison-table th.ct-after { background: var(--ledger-bg); color: var(--ledger); }
+.comparison-table td.ct-item { background: var(--paper); font-weight: 700; font-size: .84rem; }
+.comparison-table td.ct-before { border-right: 1px dashed var(--rule); color: var(--ink-soft); }
+
+@media (max-width: 640px) {
+  .section-cards { grid-template-columns: 1fr; }
+  .comparison-table table,
+  .comparison-table thead,
+  .comparison-table tbody,
+  .comparison-table th,
+  .comparison-table td,
+  .comparison-table tr { display: block; }
+  .comparison-table thead { display: none; }
+  .comparison-table tr { border-bottom: 2px solid var(--rule); padding: .6rem 0; }
+  .comparison-table td { border-bottom: none; padding: .3rem .9rem; }
+  .comparison-table td.ct-before::before { content: '現行: '; color: var(--credit); font-weight: 700; }
+  .comparison-table td.ct-after::before { content: '改正後: '; color: var(--ledger); font-weight: 700; }
+  .timeline-track { height: 90px; }
+}
+
 /* ============ アニメーション無効化（必須要件） ============ */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

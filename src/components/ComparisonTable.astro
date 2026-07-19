@@ -1,0 +1,39 @@
+---
+// 改正前後の比較表。左＝旧基準（貸方朱ヘッダー）／右＝新基準（帳簿緑ヘッダー）
+interface Row {
+  label: string;
+  before: string;
+  after: string;
+}
+interface Props {
+  beforeLabel: string;
+  afterLabel: string;
+  rows: Row[];
+  caption?: string;
+}
+const { beforeLabel, afterLabel, rows, caption } = Astro.props;
+---
+
+<figure class="comparison-table" data-animate>
+  {caption && <figcaption class="comparison-caption">{caption}</figcaption>}
+  <table>
+    <thead>
+      <tr>
+        <th scope="col" class="ct-item">項目</th>
+        <th scope="col" class="ct-before">{beforeLabel}</th>
+        <th scope="col" class="ct-after">{afterLabel}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((r) => (
+          <tr>
+            <td class="ct-item">{r.label}</td>
+            <td class="ct-before">{r.before}</td>
+            <td class="ct-after">{r.after}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</figure>

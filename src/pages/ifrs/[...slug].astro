@@ -1,0 +1,21 @@
+---
+import { getCollection, render } from 'astro:content';
+import IfrsLayout from '../../layouts/IfrsLayout.astro';
+
+export async function getStaticPaths() {
+  const articles = (await getCollection('ifrs')).sort(
+    (a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.order - b.data.order
+  );
+  return articles.map((article, i) => ({
+    params: { slug: article.id },
+    props: { article, prev: articles[i - 1], next: articles[i + 1], all: articles },
+  }));
+}
+
+const { article, prev, next, all } = Astro.props;
+const { Content } = await render(article);
+---
+
+<IfrsLayout article={article} prev={prev} next={next} all={all}>
+  <Content />
+</IfrsLayout>
