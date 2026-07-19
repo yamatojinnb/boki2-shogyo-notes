@@ -1,0 +1,41 @@
+---
+// 仕訳表示。借方＝藍・貸方＝朱、金額は等幅右寄せ。複数行対応
+interface Line {
+  account: string;
+  amount: number;
+}
+interface Props {
+  debit: Line[];
+  credit: Line[];
+  caption?: string;
+  note?: string;
+}
+const { debit, credit, caption, note } = Astro.props;
+const rows = Math.max(debit.length, credit.length);
+const yen = (n: number) => n.toLocaleString('ja-JP');
+---
+
+<figure class="journal" data-animate>
+  {caption && <figcaption class="journal-caption">{caption}</figcaption>}
+  <table class="journal-table">
+    <thead>
+      <tr>
+        <th class="h-debit" colspan="2" scope="colgroup">借方</th>
+        <th class="h-credit" colspan="2" scope="colgroup">貸方</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        Array.from({ length: rows }).map((_, i) => (
+          <tr>
+            <td class="acct debit">{debit[i]?.account ?? ''}</td>
+            <td class="amt debit debit-end">{debit[i] ? yen(debit[i].amount) : ''}</td>
+            <td class="acct credit">{credit[i]?.account ?? ''}</td>
+            <td class="amt credit">{credit[i] ? yen(credit[i].amount) : ''}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+  {note && <div class="journal-note">{note}</div>}
+</figure>

@@ -1,0 +1,49 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  lesson: CollectionEntry<'lessons'>;
+  prev?: CollectionEntry<'lessons'>;
+  next?: CollectionEntry<'lessons'>;
+}
+const { lesson, prev, next } = Astro.props;
+const d = lesson.data;
+const no = String(d.order).padStart(2, '0');
+---
+
+<BaseLayout title={`${d.title}｜商業簿記ノート`} description={d.summary}>
+  <article class="lesson container">
+    <header class="lesson-head" data-animate>
+      <span class="lesson-badge">LESSON {no}</span>
+      <span class="lesson-cat">{d.category}</span>
+      <h1>{d.title}</h1>
+      <p class="lesson-kana">{d.kana}</p>
+      <p class="lesson-summary">{d.summary}</p>
+    </header>
+
+    <div class="lesson-body">
+      <slot />
+    </div>
+
+    <nav class="lesson-nav" aria-label="前後のレッスン">
+      {
+        prev && (
+          <a class="nav-prev" href={`/lessons/${prev.id}/`}>
+            <span class="dir">← 前のレッスン</span>
+            <span class="ttl">{prev.data.title}</span>
+          </a>
+        )
+      }
+      {
+        next && (
+          <a class="nav-next" href={`/lessons/${next.id}/`}>
+            <span class="dir">次のレッスン →</span>
+            <span class="ttl">{next.data.title}</span>
+          </a>
+        )
+      }
+      <a class="nav-index" href="/#lessons">レッスン一覧へ戻る</a>
+    </nav>
+  </article>
+</BaseLayout>

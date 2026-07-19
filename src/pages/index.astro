@@ -1,0 +1,53 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const lessons = (await getCollection('lessons')).sort((a, b) => a.data.order - b.data.order);
+// インデックスタブの色をレッスンごとにローテーション
+const tabColors = ['var(--ledger)', 'var(--debit)', 'var(--credit)', 'var(--gold)'];
+---
+
+<BaseLayout
+  title="商業簿記ノート｜簿記2級・商業簿記を図解とアニメーションで学ぶ"
+  description="日商簿記2級・商業簿記の論点を、仕訳・T字勘定の図解と触って学べるインタラクティブ教材でまとめた学習ノート。売上原価、減価償却、貸倒引当金、銀行勘定調整表、有価証券を収録。"
+>
+  <section class="hero container" data-animate>
+    <span class="hero-kicker">日商簿記2級 — 商業簿記</span>
+    <h1>商業簿記ノート</h1>
+    <p class="hero-kana">しょうぎょうぼきのーと</p>
+    <div class="hero-rule" aria-hidden="true"></div>
+    <p class="hero-lead">
+      会計実務のなかで学び直した簿記2級の論点を、総勘定元帳をひらく気持ちでまとめました。
+      <span class="t-debit">借方は藍</span>、<span class="t-credit">貸方は朱</span>。
+      図解とアニメーションで、仕訳の「流れ」ごと覚えていきます。
+    </p>
+    <div class="hero-badges">
+      <span>仕訳で理解</span>
+      <span>T字勘定の図解</span>
+      <span>触って学べる教材つき</span>
+    </div>
+  </section>
+
+  <section id="lessons" class="container" data-animate>
+    <h2 class="section-title">レッスン一覧</h2>
+    <ol class="card-grid">
+      {
+        lessons.map((l, i) => (
+          <li>
+            <a
+              class="lesson-card"
+              href={`/lessons/${l.id}/`}
+              style={`--tab-color:${tabColors[i % tabColors.length]}`}
+            >
+              <span class="card-tab">{l.data.category}</span>
+              <span class="card-no">LESSON {String(l.data.order).padStart(2, '0')}</span>
+              <span class="card-title">{l.data.title}</span>
+              <span class="card-kana">{l.data.kana}</span>
+              <p class="card-summary">{l.data.summary}</p>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+</BaseLayout>

@@ -1,0 +1,43 @@
+---
+// T字勘定。中央縦線＋上部横線、左右にエントリを積む。行は順にフェードイン
+interface Entry {
+  label: string;
+  amount: number;
+  balance?: boolean; // 残高行（罫線で区切って太字）
+}
+interface Props {
+  name: string;
+  debits: Entry[];
+  credits: Entry[];
+  caption?: string;
+}
+const { name, debits, credits, caption } = Astro.props;
+const yen = (n: number) => n.toLocaleString('ja-JP');
+---
+
+<figure class="taccount" data-animate>
+  <div class="ta-name">{name}</div>
+  <div class="ta-body">
+    <ul class="ta-side ta-left" aria-label={`${name}勘定の借方`}>
+      {
+        debits.map((e, i) => (
+          <li class:list={['stagger', { 'ta-balance': e.balance }]} style={`--d:${i * 150}ms`}>
+            <span class="ta-label">{e.label}</span>
+            <span class="amt">{yen(e.amount)}</span>
+          </li>
+        ))
+      }
+    </ul>
+    <ul class="ta-side ta-right" aria-label={`${name}勘定の貸方`}>
+      {
+        credits.map((e, i) => (
+          <li class:list={['stagger', { 'ta-balance': e.balance }]} style={`--d:${(debits.length + i) * 150}ms`}>
+            <span class="ta-label">{e.label}</span>
+            <span class="amt">{yen(e.amount)}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+  {caption && <figcaption class="ta-caption">{caption}</figcaption>}
+</figure>

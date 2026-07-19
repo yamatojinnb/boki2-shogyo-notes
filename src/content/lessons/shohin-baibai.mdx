@@ -1,0 +1,65 @@
+---
+title: 商品売買と売上原価（しーくり くりしー）
+kana: しょうひんばいばい と うりあげげんか
+category: 商品売買
+order: 1
+summary: 三分法の決算整理「しーくり くりしー」。期首・期末の商品を仕入勘定に集めて、売上原価を計算する流れを図解とアニメーションで理解する。
+---
+
+import Journal from '../../components/Journal.astro';
+import TAccount from '../../components/TAccount.astro';
+import Point from '../../components/Point.astro';
+import InventoryFlow from '../../islands/InventoryFlow.tsx';
+
+## 三分法では売上原価が自動では出ない
+
+三分法は、商品売買を<span class="t-debit">仕入</span>・<span class="t-credit">売上</span>・繰越商品の3つの勘定で処理する方法です。期中の仕入勘定には「当期に買った金額」しか入っていないため、決算で**期首在庫を足し、期末在庫を引いて**、売上原価に作り替える必要があります。
+
+設例：期首商品 20,000円／当期仕入高 180,000円／期末商品 30,000円
+
+## 決算整理仕訳 —「しーくり くりしー」
+
+<Journal
+  caption="① しーくり：期首商品を仕入勘定へ振り替える"
+  debit={[{ account: '仕入', amount: 20000 }]}
+  credit={[{ account: '繰越商品', amount: 20000 }]}
+/>
+
+<Journal
+  caption="② くりしー：期末商品を仕入勘定から取り出す"
+  debit={[{ account: '繰越商品', amount: 30000 }]}
+  credit={[{ account: '仕入', amount: 30000 }]}
+/>
+
+<Point>
+  「<strong>し</strong>いれ／<strong>くり</strong>こししょうひん、<strong>くり</strong>こししょうひん／<strong>し</strong>いれ」の頭文字で「**しーくり くりしー**」。
+  仕訳の順番ごと口に出して覚えるのが定番です。①と②はワンセットで、順番が入れ替わることはありません。
+</Point>
+
+## 仕入勘定をT字で見る
+
+決算整理後の仕入勘定の残高が、そのまま売上原価になります。
+
+<TAccount
+  name="仕　入"
+  caption="決算整理後の仕入勘定 — 貸方との差額170,000円が売上原価"
+  debits={[
+    { label: '当期仕入高', amount: 180000 },
+    { label: '繰越商品（期首）', amount: 20000 },
+  ]}
+  credits={[
+    { label: '繰越商品（期末）', amount: 30000 },
+    { label: '残高＝売上原価', amount: 170000, balance: true },
+  ]}
+/>
+
+## 触って確かめる
+
+ボタンを押すと、在庫チップが「繰越商品」と「仕入」のボックスの間を移動します。2つの振替が終わったときの仕入ボックスの残高に注目してください。
+
+<InventoryFlow client:visible />
+
+<Point>
+  売上原価 ＝ **期首商品棚卸高 ＋ 当期商品仕入高 − 期末商品棚卸高**。
+  「しーくり」で足して「くりしー」で引く——仕訳とこの公式は同じことを別の形で言っています。
+</Point>
