@@ -1,0 +1,75 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import MockExamTabs from '../islands/MockExamTabs.tsx';
+import ScoringPanel from '../islands/ScoringPanel.tsx';
+import { base } from '../lib/site';
+
+interface Props {
+  exam: CollectionEntry<'mockExams'>;
+  prev?: CollectionEntry<'mockExams'>;
+  next?: CollectionEntry<'mockExams'>;
+}
+const { exam, prev, next } = Astro.props;
+const d = exam.data;
+const no = String(d.order).padStart(2, '0');
+
+const tabs = [
+  { id: 'q1', label: '第1問', points: 20 },
+  { id: 'q2', label: '第2問', points: 20 },
+  { id: 'q3', label: '第3問', points: 20 },
+];
+
+// 全回共通の採点構造（第1問は仕訳5問×4点、第2問・第3問はそれぞれ20点の総合問題）
+const scoringItems = [
+  { id: 'q1-1', label: '第1問 問1', points: 4 },
+  { id: 'q1-2', label: '第1問 問2', points: 4 },
+  { id: 'q1-3', label: '第1問 問3', points: 4 },
+  { id: 'q1-4', label: '第1問 問4', points: 4 },
+  { id: 'q1-5', label: '第1問 問5', points: 4 },
+  { id: 'q2', label: '第2問', points: 20 },
+  { id: 'q3', label: '第3問', points: 20 },
+];
+---
+
+<BaseLayout title={`${d.title}｜会計ノート`} description={d.summary}>
+  <article class="lesson container mock-exam">
+    <header class="lesson-head" data-animate>
+      <span class="lesson-badge">模試 {no}</span>
+      <span class="mock-difficulty">{d.difficulty}</span>
+      <h1>{d.title}</h1>
+      <p class="lesson-summary">{d.summary}</p>
+      <ul class="mock-topics" aria-label="出題論点">
+        {d.topics.map((t) => <li>{t}</li>)}
+      </ul>
+    </header>
+
+    <ScoringPanel client:visible items={scoringItems} />
+
+    <MockExamTabs client:visible tabs={tabs} />
+
+    <div class="mock-panels">
+      <slot />
+    </div>
+
+    <nav class="lesson-nav" aria-label="前後の模試">
+      {
+        prev && (
+          <a class="nav-prev" href={`${base}mock/${prev.id}/`}>
+            <span class="dir">← 前の模試</span>
+            <span class="ttl">{prev.data.title}</span>
+          </a>
+        )
+      }
+      {
+        next && (
+          <a class="nav-next" href={`${base}mock/${next.id}/`}>
+            <span class="dir">次の模試 →</span>
+            <span class="ttl">{next.data.title}</span>
+          </a>
+        )
+      }
+      <a class="nav-index" href={`${base}mock/`}>模擬試験一覧へ戻る</a>
+    </nav>
+  </article>
+</BaseLayout>

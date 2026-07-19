@@ -1,0 +1,35 @@
+---
+// 問題文中の資料・試算表・精算表などを表示する汎用テーブル。数値セルは自動で等幅右寄せにする
+interface Props {
+  headers: string[];
+  rows: (string | number)[][];
+  caption?: string;
+}
+const { headers, rows, caption } = Astro.props;
+const isNumeric = (v: string | number) =>
+  typeof v === 'number' || /^[△▲\-]?[\d,]+(円)?$/.test(String(v).trim());
+---
+
+<figure class="data-table" data-animate>
+  {caption && <figcaption class="data-table-caption">{caption}</figcaption>}
+  <div class="data-table-scroll">
+    <table>
+      <thead>
+        <tr>
+          {headers.map((h) => <th scope="col">{h}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {
+          rows.map((row) => (
+            <tr>
+              {row.map((cell) => (
+                <td class={isNumeric(cell) ? 'num' : ''}>{cell}</td>
+              ))}
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+</figure>

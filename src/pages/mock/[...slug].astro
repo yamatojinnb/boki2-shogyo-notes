@@ -1,0 +1,19 @@
+---
+import { getCollection, render } from 'astro:content';
+import MockExamLayout from '../../layouts/MockExamLayout.astro';
+
+export async function getStaticPaths() {
+  const exams = (await getCollection('mockExams')).sort((a, b) => a.data.order - b.data.order);
+  return exams.map((exam, i) => ({
+    params: { slug: exam.id },
+    props: { exam, prev: exams[i - 1], next: exams[i + 1] },
+  }));
+}
+
+const { exam, prev, next } = Astro.props;
+const { Content } = await render(exam);
+---
+
+<MockExamLayout exam={exam} prev={prev} next={next}>
+  <Content />
+</MockExamLayout>

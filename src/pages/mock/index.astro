@@ -1,0 +1,50 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { base } from '../../lib/site';
+
+const exams = (await getCollection('mockExams')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout
+  title="模擬試験｜会計ノート"
+  description="日商簿記2級・商業簿記（第1問〜第3問、60点満点）のオリジナル模擬試験。解答・解説付きで3回分収録。"
+>
+  <section class="hero container" data-animate>
+    <span class="hero-kicker">日商簿記2級 — 商業簿記</span>
+    <h1>模擬試験</h1>
+    <div class="hero-rule" aria-hidden="true"></div>
+    <p class="hero-lead">
+      商業簿記（第1問〜第3問、60点満点）のオリジナル模擬試験です。大問ごとにタブで切り替え、「解答を表示」「解説を表示」で段階的に確認しながら演習できます。
+    </p>
+  </section>
+
+  <section class="container" data-animate>
+    <h2 class="section-title">模試一覧</h2>
+    <ol class="mock-list">
+      {
+        exams.map((e) => (
+          <li>
+            <a class="mock-card" href={`${base}mock/${e.id}/`}>
+              <div class="mock-card-head">
+                <span class="mock-card-no">模試 {String(e.data.order).padStart(2, '0')}</span>
+                <span class="mock-difficulty">{e.data.difficulty}</span>
+                <span class="mock-card-points">60点満点</span>
+              </div>
+              <h3 class="mock-card-title">{e.data.title}</h3>
+              <p class="mock-card-summary">{e.data.summary}</p>
+              <ul class="mock-topics" aria-label="出題論点">
+                {e.data.topics.map((t) => (
+                  <li>{t}</li>
+                ))}
+              </ul>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+    <p class="mock-disclaimer">
+      本模試はオリジナル問題です。日本商工会議所の過去問題とは一切関係ありません。
+    </p>
+  </section>
+</BaseLayout>

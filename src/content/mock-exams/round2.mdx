@@ -1,0 +1,405 @@
+---
+title: "第2回 模擬試験"
+order: 2
+summary: "決算整理と財務諸表。仕訳5問＋銀行勘定調整表＋損益計算書の作成。"
+difficulty: "標準"
+topics: ["リース取引", "外貨建取引", "手形", "税効果会計", "剰余金の配当", "銀行勘定調整表", "損益計算書"]
+---
+
+import Journal from '../../components/Journal.astro';
+import Point from '../../components/Point.astro';
+import DataTable from '../../components/DataTable.astro';
+import RevealSection from '../../islands/RevealSection.tsx';
+
+<div id="mock-panel-q1">
+
+## 第1問 仕訳問題（4点×5問＝20点）
+
+次の各取引について仕訳しなさい。勘定科目は最も適切と思われるものを使用すること。
+
+<div class="mock-question">
+<div class="mock-question-head">
+<h3>問1　ファイナンス・リースの契約開始</h3>
+<span class="mock-question-pts">4点</span>
+</div>
+<div class="mock-question-body">
+
+×2年4月1日に、備品のファイナンス・リース契約（所有権移転外）を締結した。リース期間5年、年間リース料 ¥110,000（毎年3月31日後払い）。リース資産の計上額は、見積現金購入価額 ¥480,000とリース料総額の割引現在価値 ¥470,000のいずれか低い方とする。
+
+</div>
+
+<RevealSection label="解答を表示" targetId="q1-1-answer" client:load />
+<div id="q1-1-answer" class="reveal-panel"><div class="reveal-inner">
+
+<Journal
+  caption="仕訳"
+  debit={[{ account: 'リース資産', amount: 470000 }]}
+  credit={[{ account: 'リース債務', amount: 470000 }]}
+/>
+
+</div></div>
+
+<RevealSection label="解説を表示" targetId="q1-1-explanation" client:load />
+<div id="q1-1-explanation" class="reveal-panel"><div class="reveal-inner">
+
+<ol class="steps">
+<li>リース料総額 ＝ 110,000円 × 5年 ＝ 550,000円（単純合計。まだ計上額ではない）</li>
+<li>計上額は「見積現金購入価額480,000円」と「リース料総額の割引現在価値470,000円」のいずれか低い方 ＝ 470,000円</li>
+<li>所有権移転外ファイナンス・リースなので、リース期間を耐用年数とみなして定額法・残存価額ゼロで償却する（減価償却は決算時の論点）</li>
+</ol>
+
+ファイナンス・リースは、実質的に資産を分割払いで購入したのと同じ経済効果を持つ取引として、リース資産・リース債務を貸借対照表に計上します（オンバランス処理）。契約時にはリース料総額そのものではなく、現在価値ベースの金額で計上する点が最大のポイントです。
+
+<div class="mistake-box">
+⚠ ここで間違えやすい：リース料総額550,000円をそのまま計上してしまうミス。利息相当額を含む総額ではなく、現在価値（またはそれに準ずる見積現金購入価額との低い方）で計上します。
+</div>
+
+</div></div>
+</div>
+
+<div class="mock-question">
+<div class="mock-question-head">
+<h3>問2　外貨建取引（取引発生時）</h3>
+<span class="mock-question-pts">4点</span>
+</div>
+<div class="mock-question-body">
+
+アメリカのスミス社から商品 $2,000を掛けで輸入した。取引発生日の為替レートは1ドル ¥148であった。
+
+</div>
+
+<RevealSection label="解答を表示" targetId="q1-2-answer" client:load />
+<div id="q1-2-answer" class="reveal-panel"><div class="reveal-inner">
+
+<Journal
+  caption="仕訳"
+  debit={[{ account: '仕入', amount: 296000 }]}
+  credit={[{ account: '買掛金', amount: 296000 }]}
+/>
+
+</div></div>
+
+<RevealSection label="解説を表示" targetId="q1-2-explanation" client:load />
+<div id="q1-2-explanation" class="reveal-panel"><div class="reveal-inner">
+
+<ol class="steps">
+<li>外貨建取引は、取引発生時の為替レート（HR）で円換算する</li>
+<li>$2,000 × ¥148 ＝ ¥296,000</li>
+<li>仕入・買掛金とも同額で円換算して計上する</li>
+</ol>
+
+外貨建取引の会計処理でまず押さえるべきは「取引発生時は、その時点のレートでそのまま円換算するだけ」というシンプルなルールです。決算時に保有している外貨建ての債権・債務については、決算日レート（CR）への換算替えが必要になりますが、それは別の論点（本模試 第3回問4を参照）です。
+
+<div class="related-box">
+関連知識：決算時の外貨建金銭債権の換算については、第3回模試の問4で扱います。
+</div>
+
+</div></div>
+</div>
+
+<div class="mock-question">
+<div class="mock-question-head">
+<h3>問3　受取手形の裏書譲渡</h3>
+<span class="mock-question-pts">4点</span>
+</div>
+<div class="mock-question-body">
+
+仕入先のかえで商店から商品 ¥200,000を仕入れ、代金のうち ¥150,000は得意先やまと商事振出しの約束手形を裏書譲渡し、残額は掛けとした。
+
+</div>
+
+<RevealSection label="解答を表示" targetId="q1-3-answer" client:load />
+<div id="q1-3-answer" class="reveal-panel"><div class="reveal-inner">
+
+<Journal
+  caption="仕訳"
+  debit={[{ account: '仕入', amount: 200000 }]}
+  credit={[{ account: '受取手形', amount: 150000 }, { account: '買掛金', amount: 50000 }]}
+/>
+
+</div></div>
+
+<RevealSection label="解説を表示" targetId="q1-3-explanation" client:load />
+<div id="q1-3-explanation" class="reveal-panel"><div class="reveal-inner">
+
+<ol class="steps">
+<li>手形の裏書譲渡とは、保有している受取手形を、自らの仕入代金の支払いにあてて仕入先へ譲渡すること</li>
+<li>裏書きした分だけ受取手形（資産）が減少する ＝ 貸方に150,000円</li>
+<li>仕入代金200,000円のうち手形で支払わなかった残額50,000円は、通常どおり掛け（買掛金）とする</li>
+</ol>
+
+自社が保有する受取手形は、満期を待たずに他者への支払手段として使うことができます。これを「裏書譲渡」と呼び、手形の割引（金融機関に売却して資金化する）とは目的も相手先も異なる点を区別しておきましょう。
+
+</div></div>
+</div>
+
+<div class="mock-question">
+<div class="mock-question-head">
+<h3>問4　税効果会計（その他有価証券の評価差額）</h3>
+<span class="mock-question-pts">4点</span>
+</div>
+<div class="mock-question-body">
+
+決算において、その他有価証券（取得原価 ¥200,000）の期末時価は ¥180,000であった。全部純資産直入法を採用しており、税効果会計を適用する。法定実効税率は30%とする。
+
+</div>
+
+<RevealSection label="解答を表示" targetId="q1-4-answer" client:load />
+<div id="q1-4-answer" class="reveal-panel"><div class="reveal-inner">
+
+<Journal
+  caption="① 時価評価"
+  debit={[{ account: 'その他有価証券評価差額金', amount: 20000 }]}
+  credit={[{ account: 'その他有価証券', amount: 20000 }]}
+/>
+
+<Journal
+  caption="② 税効果の認識"
+  debit={[{ account: '繰延税金資産', amount: 6000 }]}
+  credit={[{ account: 'その他有価証券評価差額金', amount: 6000 }]}
+/>
+
+</div></div>
+
+<RevealSection label="解説を表示" targetId="q1-4-explanation" client:load />
+<div id="q1-4-explanation" class="reveal-panel"><div class="reveal-inner">
+
+<ol class="steps">
+<li>評価差額 ＝ 取得原価200,000円 − 期末時価180,000円 ＝ 20,000円（評価損側）</li>
+<li>税効果の金額 ＝ 20,000円 × 30％ ＝ 6,000円</li>
+<li>その他有価証券評価差額金の最終残高 ＝ 20,000円 − 6,000円 ＝ 14,000円（借方＝純資産のマイナス）</li>
+</ol>
+
+その他有価証券は時価評価しますが、売買目的とは異なり評価差額を損益（P/L）には計上せず、税効果を控除したうえで純資産の部に直接計上します（全部純資産直入法）。評価差額の「総額」ではなく、税金相当額を除いた「税引後の金額」が最終的に純資産に残る点が最大のポイントです。
+
+<div class="mistake-box">
+⚠ ここで間違えやすい：①税効果の仕訳を忘れて評価差額20,000円をそのまま純資産に計上してしまう。②売買目的有価証券と混同し、評価差額をP/L（有価証券評価損）に計上してしまう。その他有価証券の評価差額はP/Lを通りません。
+</div>
+
+<div class="related-box">
+関連知識：<a href="/boki2-shogyo-notes/lessons/yuka-shoken/">L5 有価証券の4分類と期末評価</a>
+</div>
+
+</div></div>
+</div>
+
+<div class="mock-question">
+<div class="mock-question-head">
+<h3>問5　剰余金の配当</h3>
+<span class="mock-question-pts">4点</span>
+</div>
+<div class="mock-question-body">
+
+株主総会において、繰越利益剰余金を原資として株主配当金 ¥200,000を行うことが決議された。会社法の規定にもとづき、必要な範囲で利益準備金を積み立てる。配当直前の資本金は ¥1,000,000、資本準備金は ¥100,000、利益準備金は ¥100,000である。
+
+</div>
+
+<RevealSection label="解答を表示" targetId="q1-5-answer" client:load />
+<div id="q1-5-answer" class="reveal-panel"><div class="reveal-inner">
+
+<Journal
+  caption="仕訳"
+  debit={[{ account: '繰越利益剰余金', amount: 220000 }]}
+  credit={[{ account: '未払配当金', amount: 200000 }, { account: '利益準備金', amount: 20000 }]}
+/>
+
+</div></div>
+
+<RevealSection label="解説を表示" targetId="q1-5-explanation" client:load />
+<div id="q1-5-explanation" class="reveal-panel"><div class="reveal-inner">
+
+<ol class="steps">
+<li>準備金積立ての上限額 ＝ 資本金の1/4 ＝ 1,000,000円 ÷ 4 ＝ 250,000円</li>
+<li>準備金の現在額 ＝ 資本準備金100,000円 ＋ 利益準備金100,000円 ＝ 200,000円</li>
+<li>上限まであと積み立てられる額 ＝ 250,000円 − 200,000円 ＝ 50,000円</li>
+<li>配当額の1/10 ＝ 200,000円 ÷ 10 ＝ 20,000円</li>
+<li>実際の積立額 ＝ STEP3とSTEP4の小さい方 ＝ 20,000円</li>
+<li>繰越利益剰余金の減少額 ＝ 配当金200,000円 ＋ 積立額20,000円 ＝ 220,000円</li>
+</ol>
+
+会社法では、配当のたびに際限なく利益準備金を積み立てさせるのではなく、「資本準備金と利益準備金の合計が資本金の1/4に達するまで」を上限としています。積立額は「配当額の1/10」と「上限までの残り枠」を比較して、小さい方を採用します。
+
+<div class="mistake-box">
+⚠ ここで間違えやすい：「配当額の1/10＝20,000円」だけを計算して積み立ててしまい、資本金の1/4という上限チェック（STEP1〜3）を省略するミス。今回はたまたま両方とも20,000円ですが、準備金の現在額が多い場合は上限の方が小さくなり、積立額が1/10より少なくなることがあります。
+</div>
+
+</div></div>
+</div>
+
+</div>
+
+<div id="mock-panel-q2" hidden>
+
+## 第2問 銀行勘定調整表（20点）
+
+決算日（×3年3月31日）における当社の当座預金勘定の残高は ¥386,000であり、銀行の残高証明書の残高は ¥446,000であった。以下の不一致原因にもとづいて、(1)銀行勘定調整表（両者区分調整法）を完成させ、(2)必要な修正仕訳を示しなさい。
+
+**不一致の原因**
+
+1. 得意先からの振込み ¥48,000について、当社に入金通知が届いておらず未記帳である。
+2. ×3年3月31日に ¥25,000を当座預金に預け入れたが、銀行の営業時間外であったため、銀行では翌日付けの入金として処理されている。
+3. 仕入先に振り出した小切手 ¥30,000が、まだ銀行に呈示されていない。
+4. 水道光熱費 ¥15,000が当座預金から自動引落しされていたが、当社ではまだ記帳していなかった。
+5. 買掛金の支払いのために振り出した小切手 ¥22,000を、事務担当者が相手先にまだ渡していなかった。
+
+<RevealSection label="解答を表示" targetId="q2-answer" client:load />
+<div id="q2-answer" class="reveal-panel"><div class="reveal-inner">
+
+<DataTable
+  caption="(1) 銀行勘定調整表（両者区分調整法）"
+  headers={['当社帳簿', '金額', '銀行残高証明書', '金額']}
+  rows={[
+    ['調整前残高', '386,000', '調整前残高', '446,000'],
+    ['1. 入金通知未達（＋）', '48,000', '2. 時間外預入（＋）', '25,000'],
+    ['4. 引落し未記帳（−）', '15,000', '3. 未取付小切手（−）', '30,000'],
+    ['5. 未渡小切手（＋）', '22,000', '', ''],
+    ['調整後残高', '441,000', '調整後残高', '441,000'],
+  ]}
+/>
+
+<Journal
+  caption="(2) 修正仕訳①：入金通知未達"
+  debit={[{ account: '当座預金', amount: 48000 }]}
+  credit={[{ account: '売掛金', amount: 48000 }]}
+/>
+
+<Journal
+  caption="(2) 修正仕訳②：引落し未記帳"
+  debit={[{ account: '水道光熱費', amount: 15000 }]}
+  credit={[{ account: '当座預金', amount: 15000 }]}
+/>
+
+<Journal
+  caption="(2) 修正仕訳③：未渡小切手"
+  debit={[{ account: '当座預金', amount: 22000 }]}
+  credit={[{ account: '買掛金', amount: 22000 }]}
+/>
+
+</div></div>
+
+<RevealSection label="解説を表示" targetId="q2-explanation" client:load />
+<div id="q2-explanation" class="reveal-panel"><div class="reveal-inner">
+
+<ol class="steps">
+<li>不一致原因が「当社側」の記帳もれか、「銀行側」の未処理かをまず判定する</li>
+<li>入金通知未達：銀行は処理済みだが当社が未記帳 → 当社側に加算し、修正仕訳が必要</li>
+<li>時間外預入：当社は処理済みだが銀行が未処理（翌日付け） → 銀行側に加算するだけで、当社の仕訳は不要</li>
+<li>未取付小切手：当社は振り出し済みだが銀行にまだ呈示されていない → 銀行側から減算するだけで、当社の仕訳は不要</li>
+<li>引落し未記帳：銀行は処理済みだが当社が未記帳 → 当社側から減算し、修正仕訳が必要</li>
+<li>未渡小切手：小切手を作成して当座預金を減らしたが、まだ相手に渡していない → 当座預金を元に戻すため加算し、修正仕訳が必要</li>
+</ol>
+
+銀行勘定調整表の解き方の型は、「①当社側の原因か銀行側の原因かを分類する→②当社側だけ修正仕訳を書く→③両者の調整後残高が一致することを確認する」の3ステップです。特に未渡小切手は「もう払った」と思いがちですが、実際に相手に渡っていない以上、当座預金を減らす処理が誤りだったことになるため、当座預金を＋方向に戻す仕訳になります。
+
+<div class="mistake-box">
+⚠ ここで間違えやすい：未渡小切手を銀行側の調整に入れてしまうミス。未渡小切手はあくまで「当社の事務手続き上の問題」（振り出したのに手渡していない）なので、当社側の調整項目です。
+</div>
+
+<div class="related-box">
+関連知識：<a href="/boki2-shogyo-notes/lessons/ginko-kanjo-chosei/">L4 銀行勘定調整表 — 両者区分調整法</a>
+</div>
+
+<Point>
+  両者区分調整法では、最終的に「当社帳簿の調整後残高」と「銀行残高証明書の調整後残高」が必ず一致します。一致しない場合は、いずれかの項目をどちら側に入れるかを間違えている可能性が高いので、まず分類からやり直しましょう。
+</Point>
+
+</div></div>
+
+</div>
+
+<div id="mock-panel-q3" hidden>
+
+## 第3問 損益計算書の作成（20点）
+
+以下の残高試算表と決算整理事項にもとづいて、報告式の損益計算書を作成しなさい。会計期間は×2年4月1日から×3年3月31日までである。
+
+<DataTable
+  caption="残高試算表（一部）"
+  headers={['勘定科目', '借方', '貸方']}
+  rows={[
+    ['売掛金', '600,000', ''],
+    ['繰越商品', '70,000', ''],
+    ['建物', '2,000,000', ''],
+    ['備品', '400,000', ''],
+    ['のれん', '300,000', ''],
+    ['買掛金', '', '350,000'],
+    ['貸倒引当金', '', '5,000'],
+    ['建物減価償却累計額', '', '400,000'],
+    ['備品減価償却累計額', '', '160,000'],
+    ['売上', '', '2,800,000'],
+    ['受取利息', '', '12,000'],
+    ['仕入', '1,900,000', ''],
+    ['給料', '240,000', ''],
+    ['支払家賃', '180,000', ''],
+    ['通信費', '24,000', ''],
+    ['支払利息', '18,000', ''],
+  ]}
+/>
+
+**決算整理事項**
+
+1. 期末商品棚卸高は ¥90,000。売上原価は仕入の行で算定する。
+2. 売掛金の期末残高に対して3%の貸倒引当金を差額補充法で設定する。
+3. 建物について定額法で減価償却する（耐用年数25年、残存価額ゼロ）。
+4. 備品について定額法で減価償却する（耐用年数4年、残存価額ゼロ）。
+5. のれんは取得後10年間で均等償却する。
+6. 支払家賃のうち ¥15,000は翌期分の前払いである。
+7. 利息の未収分が ¥3,000ある。
+
+<RevealSection label="解答を表示" targetId="q3-answer" client:load />
+<div id="q3-answer" class="reveal-panel"><div class="reveal-inner">
+
+<DataTable
+  caption="報告式 損益計算書"
+  headers={['科目', '金額']}
+  rows={[
+    ['売上高', '2,800,000'],
+    ['売上原価', '1,880,000'],
+    ['売上総利益', '920,000'],
+    ['給料', '240,000'],
+    ['支払家賃', '165,000'],
+    ['通信費', '24,000'],
+    ['貸倒引当金繰入', '13,000'],
+    ['減価償却費', '180,000'],
+    ['のれん償却', '30,000'],
+    ['販売費及び一般管理費計', '652,000'],
+    ['営業利益', '268,000'],
+    ['受取利息', '15,000'],
+    ['支払利息', '18,000'],
+    ['経常利益', '265,000'],
+    ['税引前当期純利益', '265,000'],
+  ]}
+/>
+
+</div></div>
+
+<RevealSection label="解説を表示" targetId="q3-explanation" client:load />
+<div id="q3-explanation" class="reveal-panel"><div class="reveal-inner">
+
+<ol class="steps">
+<li>売上原価 ＝ 仕入1,900,000円 ＋ 期首商品70,000円 − 期末商品90,000円 ＝ 1,880,000円</li>
+<li>貸倒引当金繰入 ＝ 見積額（売掛金600,000円×3％＝18,000円）− 整理前残高5,000円 ＝ 13,000円</li>
+<li>減価償却費 ＝ 建物（2,000,000円÷25年＝80,000円）＋ 備品（400,000円÷4年＝100,000円）＝ 180,000円</li>
+<li>のれん償却 ＝ 300,000円 ÷ 10年 ＝ 30,000円</li>
+<li>支払家賃 ＝ 180,000円 − 前払分15,000円 ＝ 165,000円</li>
+<li>受取利息 ＝ 12,000円 ＋ 未収分3,000円 ＝ 15,000円</li>
+<li>経常利益 ＝ 営業利益268,000円 ＋ 営業外収益15,000円 − 営業外費用18,000円 ＝ 265,000円</li>
+</ol>
+
+損益計算書は「売上総利益 → 営業利益 → 経常利益 → 税引前当期純利益」という段階的な区分（報告式）で作成します。のれん償却は営業活動に関連する費用として販売費及び一般管理費に含める点、受取利息・支払利息は営業外損益に区分する点を、区分ごとに整理しながら解くのがコツです。
+
+<div class="mistake-box">
+⚠ ここで間違えやすい：①のれん償却を営業外費用に入れてしまう（のれんは事業活動全体に関わる無形固定資産なので、償却費は販管費）。②受取利息の未収分3,000円の加算を忘れる。③前払家賃15,000円を控除し忘れる。
+</div>
+
+<div class="related-box">
+関連知識：<a href="/boki2-shogyo-notes/lessons/genka-shokyaku/">L2 減価償却</a>／<a href="/boki2-shogyo-notes/lessons/kashidaore-hikiatekin/">L3 貸倒引当金</a>
+</div>
+
+<Point>
+  「収益－費用＝利益」を段階ごとに計算していく報告式のP/Lでは、各段階の小計（売上総利益・営業利益・経常利益）がそれぞれ何を意味するかを理解しておくことが重要です。営業利益は本業の儲け、経常利益はそれに財務活動の損益を加味した「毎期経常的に得られる利益」を表します。
+</Point>
+
+</div></div>
+
+</div>

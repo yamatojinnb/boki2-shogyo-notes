@@ -28,4 +28,16 @@ const ifrs = defineCollection({
   }),
 });
 
-export const collections = { lessons, ifrs };
+// 模擬試験は src/content/mock-exams/*.mdx を追加するだけで一覧・ナビに自動反映される
+const mockExams = defineCollection({
+  loader: glob({ pattern: '**/*.mdx', base: './src/content/mock-exams' }),
+  schema: z.object({
+    title: z.string(),
+    order: z.number(),
+    summary: z.string(),
+    difficulty: z.string(),
+    topics: z.array(z.string()),
+  }),
+});
+
+export const collections = { lessons, ifrs, mockExams };

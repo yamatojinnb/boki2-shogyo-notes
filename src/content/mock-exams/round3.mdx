@@ -1,0 +1,476 @@
+---
+title: "第3回 模擬試験"
+order: 3
+summary: "応用論点。仕訳5問＋連結修正仕訳＋貸借対照表の作成。"
+difficulty: "やや難"
+topics: ["連結会計", "圧縮記帳", "社債", "外貨建決算", "収益認識", "連結修正仕訳", "貸借対照表"]
+---
+
+import Journal from '../../components/Journal.astro';
+import Point from '../../components/Point.astro';
+import DataTable from '../../components/DataTable.astro';
+import RevealSection from '../../islands/RevealSection.tsx';
+
+<div id="mock-panel-q1">
+
+## 第1問 仕訳問題（4点×5問＝20点）
+
+次の各取引について仕訳しなさい。勘定科目は最も適切と思われるものを使用すること。
+
+<div class="mock-question">
+<div class="mock-question-head">
+<h3>問1　連結会計（支配獲得時の開始仕訳）</h3>
+<span class="mock-question-pts">4点</span>
+</div>
+<div class="mock-question-body">
+
+P社は×2年3月31日にS社の発行済株式の80%を ¥640,000で取得し、支配を獲得した。支配獲得日のS社の純資産は、資本金 ¥500,000、利益剰余金 ¥200,000であった。連結上の投資と資本の相殺消去仕訳（開始仕訳）を示しなさい。
+
+</div>
+
+<RevealSection label="解答を表示" targetId="q1-1-answer" client:load />
+<div id="q1-1-answer" class="reveal-panel"><div class="reveal-inner">
+
+<Journal
+  caption="連結修正仕訳（開始仕訳）"
+  debit={[{ account: '資本金（S社）', amount: 500000 }, { account: '利益剰余金（S社）', amount: 200000 }, { account: 'のれん', amount: 80000 }]}
+  credit={[{ account: 'S社株式', amount: 640000 }, { account: '非支配株主持分', amount: 140000 }]}
+/>
+
+</div></div>
+
+<RevealSection label="解説を表示" targetId="q1-1-explanation" client:load />
+<div id="q1-1-explanation" class="reveal-panel"><div class="reveal-inner">
+
+<ol class="steps">
+<li>S社の純資産合計 ＝ 資本金500,000円 ＋ 利益剰余金200,000円 ＝ 700,000円</li>
+<li>親会社（P社）持分 ＝ 700,000円 × 80％ ＝ 560,000円</li>
+<li>非支配株主持分 ＝ 700,000円 × 20％ ＝ 140,000円</li>
+<li>のれん ＝ 取得原価640,000円 − 親会社持分560,000円 ＝ 80,000円</li>
+</ol>
+
+連結会計では、子会社の資産・負債を合算表示する一方、親会社が支払った投資額（S社株式）と、それに対応する子会社の資本（純資産）を相殺消去します。取得原価が親会社持分を上回る差額は「のれん」として資産計上されます。
+
+<div class="mistake-box">
+⚠ ここで間違えやすい：のれんの計算で非支配株主持分を差し引いてしまうミス。のれんは「取得原価」と「親会社の持分相当額」の差額であり、非支配株主持分とは無関係です。
+</div>
+
+</div></div>
+</div>
+
+<div class="mock-question">
+<div class="mock-question-head">
+<h3>問2　圧縮記帳（直接減額方式）</h3>
+<span class="mock-question-pts">4点</span>
+</div>
+<div class="mock-question-body">
+
+国庫補助金 ¥200,000の交付を受け、当座預金に入金された。この補助金をもとに備品 ¥500,000を購入し、代金は当座預金から支払った。補助金に相当する金額について、直接減額方式により圧縮記帳を行う。
+
+</div>
+
+<RevealSection label="解答を表示" targetId="q1-2-answer" client:load />
+<div id="q1-2-answer" class="reveal-panel"><div class="reveal-inner">
+
+<Journal
+  caption="① 補助金の受取り"
+  debit={[{ account: '当座預金', amount: 200000 }]}
+  credit={[{ account: '国庫補助金受贈益', amount: 200000 }]}
+/>
+
+<Journal
+  caption="② 備品の購入"
+  debit={[{ account: '備品', amount: 500000 }]}
+  credit={[{ account: '当座預金', amount: 500000 }]}
+/>
+
+<Journal
+  caption="③ 圧縮記帳"
+  debit={[{ account: '固定資産圧縮損', amount: 200000 }]}
+  credit={[{ account: '備品', amount: 200000 }]}
+/>
+
+</div></div>
+
+<RevealSection label="解説を表示" targetId="q1-2-explanation" client:load />
+<div id="q1-2-explanation" class="reveal-panel"><div class="reveal-inner">
+
+<ol class="steps">
+<li>補助金受取り時に「国庫補助金受贈益」（収益）を計上する</li>
+<li>備品を通常どおり取得原価500,000円で計上する</li>
+<li>直接減額方式では、補助金相当額を「固定資産圧縮損」として費用計上し、同額だけ備品の帳簿価額を直接減額する</li>
+<li>圧縮記帳後の備品の帳簿価額 ＝ 500,000円 − 200,000円 ＝ 300,000円。以後の減価償却はこの300,000円を基礎に行う</li>
+</ol>
+
+圧縮記帳は、補助金を受け取った期に多額の受贈益に課税されることを避け、固定資産の取得原価を圧縮することで課税を将来に繰り延べる制度です。受贈益と圧縮損はどちらも取り消さずに両建てで計上し、結果として当期の損益への影響を相殺する点を理解しておきましょう。
+
+<div class="mistake-box">
+⚠ ここで間違えやすい：③の仕訳で「国庫補助金受贈益」を取り消す仕訳を書いてしまうミス。受贈益はそのまま残し、固定資産圧縮損という別の費用勘定で経済的に相殺する仕組みです。
+</div>
+
+</div></div>
+</div>
+
+<div class="mock-question">
+<div class="mock-question-head">
+<h3>問3　社債の決算整理（償却原価法）</h3>
+<span class="mock-question-pts">4点</span>
+</div>
+<div class="mock-question-body">
+
+×1年4月1日に額面総額 ¥1,000,000の社債を、額面 ¥100につき ¥96で発行した（償還期限5年）。決算日（×2年3月31日）において、償却原価法（定額法）にもとづき社債の帳簿価額を調整する。
+
+</div>
+
+<RevealSection label="解答を表示" targetId="q1-3-answer" client:load />
+<div id="q1-3-answer" class="reveal-panel"><div class="reveal-inner">
+
+<Journal
+  caption="仕訳"
+  debit={[{ account: '社債利息', amount: 8000 }]}
+  credit={[{ account: '社債', amount: 8000 }]}
+/>
+
+</div></div>
+
+<RevealSection label="解説を表示" targetId="q1-3-explanation" client:load />
+<div id="q1-3-explanation" class="reveal-panel"><div class="reveal-inner">
+
+<ol class="steps">
+<li>発行価額 ＝ 1,000,000円 × 96／100 ＝ 960,000円</li>
+<li>額面との差額（金利調整差額）＝ 1,000,000円 − 960,000円 ＝ 40,000円</li>
+<li>1年あたりの償却額 ＝ 40,000円 ÷ 5年 ＝ 8,000円</li>
+<li>社債の帳簿価額 ＝ 960,000円 → 968,000円に増加</li>
+</ol>
+
+社債を額面より低い価額で発行した場合、その差額は金利の調整とみなされ、償還までの期間にわたって毎期均等に社債の帳簿価額へ加算していきます（償却原価法・定額法）。加算した金額は「社債利息」として費用計上します。
+
+<div class="related-box">
+関連知識：本模試 第2回の税効果会計や、第1回の株主資本等変動計算書とあわせて、決算整理の型を確認しておきましょう。
+</div>
+
+</div></div>
+</div>
+
+<div class="mock-question">
+<div class="mock-question-head">
+<h3>問4　外貨建金銭債権の決算整理</h3>
+<span class="mock-question-pts">4点</span>
+</div>
+<div class="mock-question-body">
+
+決算日において、外貨建ての売掛金 $3,000（取引発生時のレート：1ドル ¥145）がある。決算日の為替レートは1ドル ¥150である。
+
+</div>
+
+<RevealSection label="解答を表示" targetId="q1-4-answer" client:load />
+<div id="q1-4-answer" class="reveal-panel"><div class="reveal-inner">
+
+<Journal
+  caption="仕訳"
+  debit={[{ account: '売掛金', amount: 15000 }]}
+  credit={[{ account: '為替差益', amount: 15000 }]}
+/>
+
+</div></div>
+
+<RevealSection label="解説を表示" targetId="q1-4-explanation" client:load />
+<div id="q1-4-explanation" class="reveal-panel"><div class="reveal-inner">
+
+<ol class="steps">
+<li>取引発生時の円換算額 ＝ $3,000 × ¥145 ＝ 435,000円</li>
+<li>決算日の円換算額 ＝ $3,000 × ¥150 ＝ 450,000円</li>
+<li>差額 ＝ 450,000円 − 435,000円 ＝ 15,000円。円安により売掛金の評価額が増加したので「為替差益」</li>
+</ol>
+
+外貨建ての金銭債権・債務は、決算日に決算日レート（CR）で換算し直す必要があります。換算替えによって生じた差額は「為替差損益」として当期の損益に計上します。今回は取引発生時より決算日の方が円安（1ドルあたりの円が増えた）なので、外貨建て資産である売掛金の価値は円換算ベースで増加＝為替差益となります。
+
+<div class="mistake-box">
+⚠ ここで間違えやすい：円高・円安の方向を逆にして、為替差損としてしまうミス。資産（売掛金）は、決算日レートが取引時より円安なら差益、円高なら差損になります。負債（買掛金など）の場合は逆になる点も注意しましょう。
+</div>
+
+</div></div>
+</div>
+
+<div class="mock-question">
+<div class="mock-question-head">
+<h3>問5　収益認識（契約負債）</h3>
+<span class="mock-question-pts">4点</span>
+</div>
+<div class="mock-question-body">
+
+×3年2月1日に、顧客と商品の販売契約を締結し、手付金として ¥120,000を現金で受け取った。×3年3月15日に商品を引き渡し、残額 ¥180,000は掛けとした。
+
+</div>
+
+<RevealSection label="解答を表示" targetId="q1-5-answer" client:load />
+<div id="q1-5-answer" class="reveal-panel"><div class="reveal-inner">
+
+<Journal
+  caption="① 手付金受取時（×3年2月1日）"
+  debit={[{ account: '現金', amount: 120000 }]}
+  credit={[{ account: '契約負債', amount: 120000 }]}
+/>
+
+<Journal
+  caption="② 商品引渡時（×3年3月15日）"
+  debit={[{ account: '契約負債', amount: 120000 }, { account: '売掛金', amount: 180000 }]}
+  credit={[{ account: '売上', amount: 300000 }]}
+/>
+
+</div></div>
+
+<RevealSection label="解説を表示" targetId="q1-5-explanation" client:load />
+<div id="q1-5-explanation" class="reveal-panel"><div class="reveal-inner">
+
+<ol class="steps">
+<li>手付金受取時点では、まだ商品を引き渡す義務（履行義務）を果たしていないため、収益ではなく「契約負債」（負債）で処理する</li>
+<li>商品引渡時に履行義務が充足されたので、そこではじめて「売上」を計上する</li>
+<li>売上の金額 ＝ 手付金120,000円 ＋ 引渡時の残額180,000円 ＝ 300,000円</li>
+</ol>
+
+収益認識基準では、「対価を受け取った時点」ではなく「履行義務を充足した時点」で収益を認識します。商品や役務の提供に先立って受け取った対価は、いったん「契約負債」という負債で処理し、実際に履行義務を果たした時点で売上に振り替えます。従来の「前受金」に近い性格ですが、収益認識基準にもとづく処理では「契約負債」という科目を使う点を押さえておきましょう。
+
+</div></div>
+</div>
+
+</div>
+
+<div id="mock-panel-q2" hidden>
+
+## 第2問 連結修正仕訳（20点）
+
+以下の資料にもとづいて、×3年3月31日（連結第1年度末）に必要な連結修正仕訳をすべて示しなさい。
+
+**資料**
+
+1. P社は×2年3月31日にS社の発行済株式の80%を ¥640,000で取得し、支配を獲得した。支配獲得日のS社の資本は、資本金 ¥500,000、利益剰余金 ¥200,000であった。
+2. のれんは20年で均等償却する。
+3. 当期（×2年4月〜×3年3月）のS社の当期純利益は ¥100,000であった。
+4. S社は当期に ¥30,000の配当を行った。
+5. 当期中にP社はS社に商品 ¥60,000を販売した（原価 ¥45,000）。期末にS社が保有する商品のうち、P社からの仕入分に含まれる未実現利益は ¥6,000である（ダウンストリーム）。
+
+<RevealSection label="解答を表示" targetId="q2-answer" client:load />
+<div id="q2-answer" class="reveal-panel"><div class="reveal-inner">
+
+<Journal
+  caption="① 開始仕訳（投資と資本の相殺消去）"
+  debit={[{ account: '資本金（S社）', amount: 500000 }, { account: '利益剰余金（S社）', amount: 200000 }, { account: 'のれん', amount: 80000 }]}
+  credit={[{ account: 'S社株式', amount: 640000 }, { account: '非支配株主持分', amount: 140000 }]}
+/>
+
+<Journal
+  caption="② のれんの償却"
+  debit={[{ account: 'のれん償却', amount: 4000 }]}
+  credit={[{ account: 'のれん', amount: 4000 }]}
+  note="80,000円÷20年＝4,000円"
+/>
+
+<Journal
+  caption="③ 子会社当期純利益の非支配株主持分への振替"
+  debit={[{ account: '非支配株主に帰属する当期純利益', amount: 20000 }]}
+  credit={[{ account: '非支配株主持分', amount: 20000 }]}
+  note="100,000円×20％＝20,000円"
+/>
+
+<Journal
+  caption="④ 子会社配当金の修正"
+  debit={[{ account: '受取配当金', amount: 24000 }, { account: '非支配株主持分', amount: 6000 }]}
+  credit={[{ account: '剰余金の配当', amount: 30000 }]}
+  note="P社分：30,000円×80％＝24,000円　非支配株主分：30,000円×20％＝6,000円"
+/>
+
+<Journal
+  caption="⑤ 内部取引（売上高・売上原価）の消去"
+  debit={[{ account: '売上高', amount: 60000 }]}
+  credit={[{ account: '売上原価', amount: 60000 }]}
+/>
+
+<Journal
+  caption="⑥ 期末棚卸資産に含まれる未実現利益の消去（ダウンストリーム）"
+  debit={[{ account: '売上原価', amount: 6000 }]}
+  credit={[{ account: '商品', amount: 6000 }]}
+/>
+
+</div></div>
+
+<RevealSection label="解説を表示" targetId="q2-explanation" client:load />
+<div id="q2-explanation" class="reveal-panel"><div class="reveal-inner">
+
+<ol class="steps">
+<li>仕訳①〜④は、連結第1年度に共通する基本パターン。支配獲得・のれん償却・子会社利益の按分・配当の相殺は、毎期この順序で処理する</li>
+<li>仕訳④で受取配当金を消去する理由：個別財務諸表上、P社は子会社からの配当を「受取配当金」として収益計上しているが、連結上は企業グループ内部の資金移動にすぎないため、この収益は消去する</li>
+<li>仕訳⑤：グループ内での商品売買は、連結上は「なかったこと」にする（外部への売上ではないため）</li>
+<li>仕訳⑥：S社の期末在庫に残っているP社の利益（未実現利益6,000円）を取り消す。ダウンストリーム（親→子）の場合、この利益はもともと親会社が全額負担しているため、非支配株主持分への按分調整は行わない</li>
+</ol>
+
+連結修正仕訳は「①投資と資本の相殺消去 → ②のれんの償却 → ③子会社純利益の按分 → ④配当の相殺 → ⑤内部取引の消去 → ⑥未実現利益の消去」という決まった流れで解くと整理しやすくなります。
+
+<div class="mistake-box">
+⚠ ここで間違えやすい：アップストリーム（子会社→親会社への販売）の場合、仕訳⑥の未実現利益の消去は親会社持分と非支配株主持分で按分する必要があります。今回はダウンストリームなので按分はありませんが、方向によって処理が変わる点を必ず確認しましょう。連結第2年度以降は、仕訳①に加えて前期の仕訳②③④⑥の累積効果を「利益剰余金期首残高」で再現する（開始仕訳の洗替え）必要がある点にも注意が必要です。
+</div>
+
+<Point>
+  連結修正仕訳は、個別財務諸表には一切影響しない「連結精算表上だけの仕訳」です。P社・S社それぞれの帳簿は変更せず、連結財務諸表を作成する過程でのみこれらの仕訳を加減算します。
+</Point>
+
+</div></div>
+
+</div>
+
+<div id="mock-panel-q3" hidden>
+
+## 第3問 貸借対照表の作成（20点）
+
+以下の残高試算表と決算整理事項にもとづいて、報告式の貸借対照表を作成しなさい。会計期間は×2年4月1日から×3年3月31日までである。
+
+<DataTable
+  caption="残高試算表（一部）"
+  headers={['勘定科目', '借方', '貸方']}
+  rows={[
+    ['現金', '95,000', ''],
+    ['当座預金', '580,000', ''],
+    ['売掛金', '400,000', ''],
+    ['繰越商品', '85,000', ''],
+    ['前払家賃', '0', ''],
+    ['建物', '3,000,000', ''],
+    ['土地', '1,500,000', ''],
+    ['のれん', '150,000', ''],
+    ['その他有価証券', '200,000', ''],
+    ['買掛金', '', '320,000'],
+    ['未払金', '', '50,000'],
+    ['貸倒引当金', '', '6,000'],
+    ['建物減価償却累計額', '', '600,000'],
+    ['社債', '', '960,000'],
+    ['資本金', '', '2,000,000'],
+    ['資本準備金', '', '300,000'],
+    ['利益準備金', '', '80,000'],
+    ['繰越利益剰余金', '', '1,000,000'],
+    ['売上', '', '3,200,000'],
+    ['受取利息', '', '8,000'],
+    ['仕入', '2,100,000', ''],
+    ['給料', '280,000', ''],
+    ['支払家賃', '96,000', ''],
+    ['支払利息', '38,000', ''],
+    ['合計', '8,524,000', '8,524,000'],
+  ]}
+/>
+
+**決算整理事項**
+
+1. 期末商品棚卸高は ¥110,000。売上原価は仕入の行で算定する。
+2. 売掛金の期末残高に対して2%の貸倒引当金を差額補充法で設定する。
+3. 建物について定額法で減価償却する（耐用年数30年、残存価額ゼロ）。
+4. のれんについて、10年間で均等償却する。
+5. 社債（額面 ¥1,000,000、×1年4月1日発行、償還期限5年）について、償却原価法（定額法）により帳簿価額を調整する。
+6. 支払家賃のうち ¥12,000は翌期分の前払いである。
+7. 利息の未払い分が ¥5,000ある。
+8. その他有価証券（取得原価 ¥200,000）の期末時価は ¥230,000である。全部純資産直入法を適用する（税効果は考慮しない）。
+
+<RevealSection label="解答を表示" targetId="q3-answer" client:load />
+<div id="q3-answer" class="reveal-panel"><div class="reveal-inner">
+
+<Journal
+  caption="① 売上原価の算定"
+  debit={[{ account: '仕入', amount: 85000 }, { account: '繰越商品', amount: 110000 }]}
+  credit={[{ account: '繰越商品', amount: 85000 }, { account: '仕入', amount: 110000 }]}
+/>
+
+<Journal
+  caption="② 貸倒引当金の設定"
+  debit={[{ account: '貸倒引当金繰入', amount: 2000 }]}
+  credit={[{ account: '貸倒引当金', amount: 2000 }]}
+  note="見積額＝400,000円×2％＝8,000円。繰入額＝8,000円−6,000円＝2,000円"
+/>
+
+<Journal
+  caption="③ 建物の減価償却"
+  debit={[{ account: '減価償却費', amount: 100000 }]}
+  credit={[{ account: '建物減価償却累計額', amount: 100000 }]}
+  note="3,000,000円÷30年＝100,000円"
+/>
+
+<Journal
+  caption="④ のれんの償却"
+  debit={[{ account: 'のれん償却', amount: 15000 }]}
+  credit={[{ account: 'のれん', amount: 15000 }]}
+  note="150,000円÷10年＝15,000円"
+/>
+
+<Journal
+  caption="⑤ 社債の償却原価法"
+  debit={[{ account: '社債利息', amount: 8000 }]}
+  credit={[{ account: '社債', amount: 8000 }]}
+  note="(1,000,000円−960,000円)÷5年＝8,000円"
+/>
+
+<Journal
+  caption="⑥ 支払家賃の前払い"
+  debit={[{ account: '前払家賃', amount: 12000 }]}
+  credit={[{ account: '支払家賃', amount: 12000 }]}
+/>
+
+<Journal
+  caption="⑦ 支払利息の未払い"
+  debit={[{ account: '支払利息', amount: 5000 }]}
+  credit={[{ account: '未払利息', amount: 5000 }]}
+/>
+
+<Journal
+  caption="⑧ その他有価証券の時価評価"
+  debit={[{ account: 'その他有価証券', amount: 30000 }]}
+  credit={[{ account: 'その他有価証券評価差額金', amount: 30000 }]}
+/>
+
+<DataTable
+  caption="報告式 貸借対照表"
+  headers={['資産の部', '金額', '負債・純資産の部', '金額']}
+  rows={[
+    ['現金', '95,000', '買掛金', '320,000'],
+    ['当座預金', '580,000', '未払金', '50,000'],
+    ['売掛金', '400,000', '未払利息', '5,000'],
+    ['貸倒引当金', '△8,000', '流動負債合計', '375,000'],
+    ['商品', '110,000', '社債', '968,000'],
+    ['前払家賃', '12,000', '固定負債合計', '968,000'],
+    ['流動資産合計', '1,189,000', '負債合計', '1,343,000'],
+    ['建物', '3,000,000', '資本金', '2,000,000'],
+    ['建物減価償却累計額', '△700,000', '資本準備金', '300,000'],
+    ['のれん', '135,000', '利益準備金', '80,000'],
+    ['土地', '1,500,000', '繰越利益剰余金', '1,601,000'],
+    ['その他有価証券', '230,000', 'その他有価証券評価差額金', '30,000'],
+    ['固定資産合計', '4,165,000', '純資産合計', '4,011,000'],
+    ['資産合計', '5,354,000', '負債・純資産合計', '5,354,000'],
+  ]}
+/>
+
+</div></div>
+
+<RevealSection label="解説を表示" targetId="q3-explanation" client:load />
+<div id="q3-explanation" class="reveal-panel"><div class="reveal-inner">
+
+<ol class="steps">
+<li>当期純利益を先に計算する：収益（売上3,200,000円＋受取利息8,000円）− 費用（売上原価2,075,000円＋給料280,000円＋支払家賃84,000円＋貸倒引当金繰入2,000円＋減価償却費100,000円＋のれん償却15,000円＋支払利息43,000円＋社債利息8,000円）＝ 3,208,000円 − 2,607,000円 ＝ 601,000円</li>
+<li>繰越利益剰余金の期末残高 ＝ 試算表の1,000,000円 ＋ 当期純利益601,000円 ＝ 1,601,000円</li>
+<li>売掛金は貸倒引当金を控除した金額（400,000円−8,000円）を、建物は減価償却累計額を控除した金額（3,000,000円−700,000円）を、それぞれ資産の部に表示する</li>
+<li>社債は償却原価法により帳簿価額を968,000円（960,000円＋8,000円）に修正して固定負債に表示する</li>
+<li>その他有価証券評価差額金30,000円は、純資産の部にそのまま表示する（税効果を考慮しないため）</li>
+<li>最終検算：資産合計5,354,000円 ＝ 負債・純資産合計5,354,000円</li>
+</ol>
+
+貸借対照表を作成する際は、まず決算整理仕訳をすべて起こし、それぞれの勘定科目が「流動資産」「固定資産」「流動負債」「固定負債」「純資産」のどの区分に属するかを整理してから金額を集計すると、記入もれを防げます。貸倒引当金や減価償却累計額のように、資産から控除する形で表示する項目があることにも注意しましょう。
+
+<div class="mistake-box">
+⚠ ここで間違えやすい：①支払家賃の前払分を「前払保険料」など別の科目名で表示してしまう（試算表の勘定科目に対応させ、家賃の前払いは「前払家賃」とする）。②繰越利益剰余金を試算表の金額のまま表示し、当期純利益の加算を忘れる。貸借対照表の繰越利益剰余金は「期末時点」の残高なので、当期純利益を必ず加算します。
+</div>
+
+<div class="related-box">
+関連知識：<a href="/boki2-shogyo-notes/lessons/yuka-shoken/">L5 有価証券の4分類と期末評価</a>／本模試 第1回の精算表とあわせて、決算整理から財務諸表を作成する流れを確認しておきましょう。
+</div>
+
+<Point>
+  貸借対照表は「資産合計＝負債合計＋純資産合計」が常に成り立ちます。決算整理仕訳をすべて反映し終えたら、必ずこの検算を行い、一致しない場合はどこかの整理仕訳に誤りがないかを見直しましょう。
+</Point>
+
+</div></div>
+
+</div>

@@ -1211,6 +1211,342 @@ a { color: var(--debit); }
   .timeline-track { height: 90px; }
 }
 
+/* ============ 模擬試験：共通バッジ・タグ ============ */
+.mock-difficulty {
+  display: inline-block;
+  margin-left: .6rem;
+  font-size: .75rem;
+  font-weight: 700;
+  padding: .18rem .8rem;
+  border-radius: 999px;
+  background: var(--credit-bg);
+  color: var(--credit);
+}
+.mock-topics {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin: .9rem 0 0;
+  padding: 0;
+}
+.mock-topics li {
+  font-size: .75rem;
+  color: var(--ink-soft);
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding: .15rem .7rem;
+}
+
+/* ============ 模擬試験：一覧ページ ============ */
+.mock-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+.mock-card {
+  display: block;
+  padding: 1.6rem 1.7rem;
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  text-decoration: none;
+  color: var(--ink);
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.mock-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 34px rgba(23, 37, 59, .13);
+}
+.mock-card-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+.mock-card-no {
+  font-family: var(--font-num);
+  font-size: .78rem;
+  letter-spacing: .12em;
+  color: var(--gold);
+}
+.mock-card-points {
+  margin-left: auto;
+  font-family: var(--font-num);
+  font-size: .8rem;
+  font-weight: 700;
+  color: var(--ledger);
+}
+.mock-card-title {
+  margin: .5rem 0 0;
+  font-family: var(--font-head);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.mock-card-summary {
+  margin: .4rem 0 0;
+  font-size: .88rem;
+  color: var(--ink-soft);
+  line-height: 1.7;
+}
+.mock-disclaimer {
+  margin-top: 2rem;
+  padding: .9rem 1.1rem;
+  font-size: .8rem;
+  color: var(--ink-soft);
+  background: var(--paper);
+  border: 1px dashed var(--rule);
+  border-radius: 10px;
+  text-align: center;
+}
+
+/* ============ 模擬試験：自己採点パネル ============ */
+.scoring-panel {
+  margin: 1.8rem 0;
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.3rem 1.4rem;
+}
+.scoring-title {
+  font-family: var(--font-head);
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0;
+}
+.scoring-hint {
+  margin: .3rem 0 1rem;
+  font-size: .82rem;
+  color: var(--ink-soft);
+}
+.scoring-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: .5rem .8rem;
+}
+.scoring-list label {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .85rem;
+  cursor: pointer;
+}
+.scoring-list input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--ledger);
+  flex-shrink: 0;
+}
+.scoring-label { flex: 1; }
+.scoring-pts { font-family: var(--font-num); color: var(--ink-soft); font-size: .78rem; }
+.scoring-total {
+  margin-top: 1rem;
+  padding-top: .8rem;
+  border-top: 1px solid var(--rule);
+  text-align: right;
+  font-size: .95rem;
+}
+.scoring-total strong { font-size: 1.3rem; color: var(--ledger); }
+
+/* ============ 模擬試験：大問タブ ============ */
+.mock-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  margin: 1.6rem 0 0;
+  border-bottom: 2px solid var(--rule);
+}
+.mock-tab {
+  display: flex;
+  align-items: baseline;
+  gap: .4rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: .95rem;
+  padding: .7rem 1.2rem;
+  border: none;
+  background: transparent;
+  color: var(--ink-soft);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+}
+.mock-tab[aria-selected='true'] {
+  color: var(--ledger);
+  border-bottom-color: var(--ledger);
+}
+.mock-tab-points {
+  font-family: var(--font-num);
+  font-size: .75rem;
+  color: var(--gold);
+}
+.mock-panels { padding-top: 1.6rem; }
+
+/* ============ 模擬試験：設問ブロック ============ */
+.mock-question {
+  margin-bottom: 3rem;
+  padding-bottom: 2.4rem;
+  border-bottom: 1px dashed var(--rule);
+}
+.mock-question:last-child { border-bottom: none; }
+.mock-question-head {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  margin-bottom: 1rem;
+}
+.mock-question-head h3 {
+  font-family: var(--font-head);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0;
+}
+.mock-question-pts {
+  font-family: var(--font-num);
+  font-size: .78rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--ledger);
+  padding: .15rem .7rem;
+  border-radius: 999px;
+}
+.mock-question-body p { margin: .7em 0; }
+
+.reveal-btn {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: .88rem;
+  font-weight: 700;
+  padding: .55rem 1.2rem;
+  margin-top: .8rem;
+  border-radius: 10px;
+  border: 1.5px solid var(--debit);
+  background: var(--white);
+  color: var(--debit);
+  cursor: pointer;
+  transition: background .2s ease, color .2s ease;
+}
+.reveal-btn:hover { background: var(--debit); color: #fff; }
+
+/* CSS Grid の 0fr→1fr トリックで高さ可変のスライドダウンを実現 */
+.reveal-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .45s ease;
+}
+.reveal-panel.is-open {
+  grid-template-rows: 1fr;
+  margin-top: .6rem;
+}
+.reveal-inner { overflow: hidden; }
+
+.steps {
+  counter-reset: step;
+  list-style: none;
+  margin: 1rem 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+}
+.steps li {
+  counter-increment: step;
+  position: relative;
+  padding: .6rem .9rem .6rem 3rem;
+  background: var(--paper);
+  border-radius: 8px;
+  font-size: .88rem;
+}
+.steps li::before {
+  content: 'STEP ' counter(step);
+  position: absolute;
+  left: .9rem;
+  top: .6rem;
+  font-family: var(--font-num);
+  font-size: .68rem;
+  font-weight: 700;
+  color: var(--ledger);
+}
+.steps li { padding-top: 1.5rem; }
+
+.mistake-box {
+  margin: 1.2rem 0;
+  padding: .8rem 1.1rem;
+  background: var(--credit-bg);
+  border-left: 4px solid var(--credit);
+  border-radius: 8px;
+  font-size: .88rem;
+}
+.mistake-box strong { color: var(--credit); }
+
+.related-box {
+  margin: 1.2rem 0;
+  padding: .7rem 1.1rem;
+  background: var(--debit-bg);
+  border-radius: 8px;
+  font-size: .85rem;
+}
+.related-box a { color: var(--debit); font-weight: 700; }
+
+/* ============ 模擬試験：資料テーブル（DataTable） ============ */
+.data-table {
+  margin: 1.4rem 0;
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.data-table-caption {
+  padding: .5rem 1rem;
+  background: var(--paper);
+  color: var(--ink-soft);
+  font-size: .8rem;
+  font-weight: 700;
+  border-bottom: 1px solid var(--rule);
+}
+.data-table-scroll { overflow-x: auto; }
+.data-table table {
+  width: 100%;
+  min-width: max-content;
+  border-collapse: collapse;
+  font-size: .85rem;
+}
+.data-table th,
+.data-table td {
+  padding: .5rem .9rem;
+  border-bottom: 1px solid var(--rule);
+  white-space: nowrap;
+}
+.data-table th {
+  background: var(--ledger-bg);
+  color: var(--ledger);
+  text-align: left;
+  font-size: .78rem;
+}
+.data-table tbody tr:nth-child(even) { background: var(--paper); }
+.data-table td.num {
+  font-family: var(--font-num);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+@media (max-width: 640px) {
+  .scoring-list { grid-template-columns: 1fr 1fr; }
+  .mock-tabs { gap: 0; }
+  .mock-tab { flex: 1; justify-content: center; padding: .6rem .4rem; font-size: .85rem; }
+  .mock-card { padding: 1.2rem 1.1rem; }
+}
+
 /* ============ アニメーション無効化（必須要件） ============ */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
