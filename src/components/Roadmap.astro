@@ -1,0 +1,97 @@
+---
+// IFRS一覧ページ用の「年度別ロードマップ」。横型タイムラインは基準の適用日が1月1日に集中し
+// 公表頻度も年1〜2本しかないため機能しなかった。年度でグループ化した縦型に置き換える。
+// 年度グループは items の年から自動生成する（記事が増えても手動追加は不要）。
+import { STATUS_COLOR_VAR } from '../lib/ifrs';
+
+type Status = 'effective' | 'upcoming' | 'exposure-draft';
+
+type Item = {
+  id: string;
+  year: number;
+  standardBadge: string;
+  title: string;
+  status: Status;
+  effectiveDate: string;
+  summary: string;
+  href: string;
+};
+
+interface Props {
+  items: Item[];
+}
+
+const { items } = Astro.props;
+
+const now = new Date();
+const currentYear = now.getFullYear();
+const currentMonth = now.getMonth() + 1;
+
+const years = [...new Set(items.map((it) => it.year))].sort((a, b) => a - b);
+
+const groups = years.map((year, idx) => {
+  const yearItems = items.filter((it) => it.year === year);
+  const isLast = idx === years.length - 1;
+  const hasUndated = yearItems.some((it) => it.effectiveDate.includes('未定'));
+
+  let heading = `${year}年`;
+  let badgeLabel: string | null = null;
+  if (isLast && hasUndated && year > currentYear + 1) {
+    heading = `${year}年以降`;
+  } else if (year <= currentYear) {
+    badgeLabel = '適用開始済み';
+  } else {
+    badgeLabel = '準備が必要';
+  }
+
+  return { year, heading, badgeLabel, items: yearItems };
+});
+
+// 「現在」マーカーは、当年以前の最後のグループと、翌年以降の最初のグループの間に挿入する
+const nowMarkerIndex = groups.findIndex((g) => g.year > currentYear);
+---
+
+{
+  groups.length > 0 && (
+    <div class="roadmap">
+      {groups.map((g, idx) => (
+        <Fragment>
+          {idx === nowMarkerIndex && nowMarkerIndex > 0 && (
+            <div class="roadmap-now" aria-hidden="true">
+              <span>◀ 現在 {currentYear}年{currentMonth}月</span>
+            </div>
+          )}
+          <div class="roadmap-year">
+            <h3 class="roadmap-year-heading">
+              {g.heading}
+              {g.badgeLabel && <span class="roadmap-year-badge">{g.badgeLabel}</span>}
+            </h3>
+            <ul class="roadmap-items">
+              {g.items.map((it) => (
+                <li>
+                  <a
+                    class="roadmap-card"
+                    href={it.href}
+                    style={`--dot-color:${STATUS_COLOR_VAR[it.status]}`}
+                  >
+                    <span class="roadmap-dot" aria-hidden="true" />
+                    <span class="roadmap-card-body">
+                      <span class="roadmap-card-head">
+                        <strong>{it.standardBadge}</strong>
+                        {it.title}
+                      </span>
+                      <span class="roadmap-card-date">
+                        {it.effectiveDate}{!it.effectiveDate.includes('未定') && '〜'}
+                      </span>
+                      {it.summary && <span class="roadmap-card-summary">{it.summary}</span>}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Fragment>
+      ))}
+    </div>
+  )
+}

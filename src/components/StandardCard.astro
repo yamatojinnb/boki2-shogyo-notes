@@ -19,7 +19,7 @@ const d = entry.data;
   <h3 class="ifrs-card-title">{d.title}</h3>
   <p class="ifrs-card-summary">{d.summary}</p>
   <div class="ifrs-card-meta">
+    <span>{d.effectiveDate}{!d.effectiveDate.includes('未定') && '〜'}</span>
     <span>公開日 {formatDate(d.date)}</span>
-    <span>適用開始 {d.effectiveDate}</span>
   </div>
 </a>

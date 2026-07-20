@@ -39,6 +39,10 @@
   --font-head: 'Shippori Mincho', 'Hiragino Mincho ProN', serif;
   --font-body: 'Zen Kaku Gothic New', 'Hiragino Kaku Gothic ProN', sans-serif;
   --font-num: 'IBM Plex Mono', ui-monospace, monospace;
+  --font-display: var(--font-head);
+
+  /* IFRSロードマップの縦線 */
+  --ledger-line: var(--rule);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -569,6 +573,7 @@ a { color: var(--debit); }
   background: transparent;
   color: var(--ledger);
   padding: .5rem 1.2rem;
+  white-space: nowrap;
   cursor: pointer;
 }
 .toggle-group button[aria-pressed="true"] {
@@ -1041,6 +1046,10 @@ a { color: var(--debit); }
   font-size: .85rem;
   color: var(--ink-soft);
   line-height: 1.7;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .ifrs-card-meta {
   margin-top: auto;
@@ -1048,107 +1057,159 @@ a { color: var(--debit); }
   border-top: 1px dashed var(--rule);
   display: flex;
   flex-direction: column;
+  align-items: flex-end;
   gap: .15rem;
   font-size: .74rem;
   color: var(--ink-soft);
 }
 
-/* ============ IFRS：適用タイムライン ============ */
-.timeline {
+/* フィルターに該当する記事がない場合 */
+.ifrs-empty {
+  margin: 2rem 0 0;
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--ink-soft);
+  border: 1px dashed var(--rule);
+  border-radius: var(--radius);
+}
+
+/* IFRSページ専用の幅・見出し間隔（このページのみ既存レッスンページ幅に合わせて拡張） */
+.ifrs-container { max-width: 1120px; }
+.ifrs-hero h1 { letter-spacing: .04em; }
+.ifrs-section + .ifrs-section { margin-top: 3rem; }
+
+/* ============ IFRS：適用ロードマップ（年度別・縦型） ============ */
+.roadmap {
+  position: relative;
+  padding-left: 32px;
+}
+.roadmap::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  bottom: 6px;
+  left: 9px;
+  width: 2px;
+  background: var(--ledger-line);
+}
+.roadmap-now {
+  position: relative;
+  margin: -.6rem 0 1.4rem;
+  padding-left: 0;
+}
+.roadmap-now span {
+  display: inline-block;
+  margin-left: -32px;
+  padding: .25rem .8rem;
+  border: 1px dashed var(--credit);
+  border-radius: 999px;
+  background: var(--credit-bg);
+  color: var(--credit);
+  font-size: .74rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.roadmap-year {
+  position: relative;
+  margin-bottom: 2.2rem;
+}
+.roadmap-year:last-child { margin-bottom: 0; }
+.roadmap-year-heading {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .7rem;
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-size: 18px;
+}
+.roadmap-year-heading::before {
+  content: '';
+  position: absolute;
+  left: -28px;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid var(--ledger);
+}
+.roadmap-year-badge {
+  font-size: .72rem;
+  font-weight: 700;
+  padding: .2rem .75rem;
+  border-radius: 999px;
+  background: var(--ledger-bg);
+  color: var(--ledger);
+}
+.roadmap-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: .8rem;
+}
+.roadmap-card {
+  position: relative;
+  display: flex;
+  gap: .9rem;
+  padding: .95rem 1.2rem;
   background: var(--white);
   border: 1px solid var(--rule);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  padding: 1.6rem 1.4rem 1.2rem;
-}
-.timeline-legend {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.1rem;
-  margin: 0 0 1.6rem;
-  padding: 0;
-  font-size: .78rem;
-  color: var(--ink-soft);
-}
-.timeline-legend li { display: flex; align-items: center; gap: .4rem; }
-.timeline-legend-dot {
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  display: inline-block;
-}
-.timeline-track {
-  position: relative;
-  height: 74px;
-  margin: 0 10px;
-}
-.timeline-line {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: var(--rule);
-  transform: translateY(-50%);
-}
-.timeline-dot {
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   text-decoration: none;
   color: var(--ink);
+  transition: transform .2s ease, background-color .2s ease;
 }
-.timeline-dot-mark {
-  width: 16px;
-  height: 16px;
+.roadmap-card:hover,
+.roadmap-card:focus-visible {
+  transform: translateX(4px);
+  background: var(--ledger-bg);
+}
+.roadmap-dot {
+  position: absolute;
+  left: -28px;
+  top: 1.25rem;
+  width: 10px;
+  height: 10px;
+  flex: none;
   border-radius: 50%;
   background: var(--dot-color, var(--ledger));
-  border: 3px solid var(--white);
+  border: 2px solid var(--white);
   box-shadow: 0 0 0 1px var(--dot-color, var(--ledger));
-  transition: transform .2s ease;
 }
-.timeline-dot:hover .timeline-dot-mark,
-.timeline-dot:focus-visible .timeline-dot-mark {
-  transform: scale(1.25);
-}
-.timeline-dot-label {
-  position: absolute;
-  bottom: calc(100% + 8px);
-  left: 50%;
-  transform: translateX(-50%);
+.roadmap-card-body {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: .1rem;
-  padding: .3rem .6rem;
-  background: var(--ink);
-  color: var(--paper);
-  border-radius: 8px;
-  font-size: .72rem;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity .18s ease;
+  gap: .3rem;
+  min-width: 0;
 }
-.timeline-dot:hover .timeline-dot-label,
-.timeline-dot:focus-visible .timeline-dot-label {
-  opacity: 1;
+.roadmap-card-head {
+  font-size: .95rem;
+  line-height: 1.5;
 }
-.timeline-years {
-  position: relative;
-  height: 1.2rem;
-  margin: .4rem 10px 0;
+.roadmap-card-head strong {
+  font-family: var(--font-num);
+  color: var(--ledger);
+  margin-right: .6rem;
 }
-.timeline-years span {
-  position: absolute;
-  transform: translateX(-50%);
+.roadmap-card-date {
   font-family: var(--font-num);
   font-size: .78rem;
   color: var(--ink-soft);
+}
+.roadmap-card-summary {
+  margin: 0;
+  font-size: .82rem;
+  color: var(--ink-soft);
+  line-height: 1.6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ============ IFRS：記事ヘッダー・関連記事 ============ */
@@ -1221,7 +1282,12 @@ a { color: var(--debit); }
   .comparison-table td { border-bottom: none; padding: .3rem .9rem; }
   .comparison-table td.ct-before::before { content: '現行: '; color: var(--credit); font-weight: 700; }
   .comparison-table td.ct-after::before { content: '改正後: '; color: var(--ledger); font-weight: 700; }
-  .timeline-track { height: 90px; }
+  .roadmap { padding-left: 22px; }
+  .roadmap::before { left: 5px; }
+  .roadmap-year-heading::before { left: -20px; }
+  .roadmap-dot { left: -20px; }
+  .roadmap-now span { margin-left: -22px; white-space: normal; }
+  .ifrs-list-head .toggle-group button { font-size: .76rem; padding: .45rem .6rem; }
 }
 
 /* ============ 模擬試験：共通バッジ・タグ ============ */

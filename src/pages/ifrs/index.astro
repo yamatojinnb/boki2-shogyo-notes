@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import StandardCard from '../../components/StandardCard.astro';
-import Timeline from '../../islands/Timeline.tsx';
+import Roadmap from '../../components/Roadmap.astro';
 import { base } from '../../lib/site';
 import { extractYear, formatStandardBadge } from '../../lib/ifrs';
 
@@ -11,7 +11,7 @@ const articles = (await getCollection('ifrs')).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.order - b.data.order
 );
 
-const timelineItems = articles
+const roadmapItems = articles
   .map((a) => {
     const year = extractYear(a.data.effectiveDate);
     if (year === null) return null;
@@ -22,6 +22,7 @@ const timelineItems = articles
       title: a.data.title,
       status: a.data.status,
       effectiveDate: a.data.effectiveDate,
+      summary: a.data.summary,
       href: `${base}ifrs/${a.id}/`,
     };
   })
@@ -33,7 +34,7 @@ const timelineItems = articles
   title="IFRSアップデート｜会計ノート"
   description="IFRS（国際財務報告基準）の新設・改訂を実務者向けに解説する記事一覧。適用時期と実務への影響をまとめています。"
 >
-  <section class="hero container" data-animate>
+  <section class="hero container ifrs-container ifrs-hero" data-animate>
     <span class="hero-kicker">ACCOUNTING NOTES — IFRS</span>
     <h1>IFRS アップデート</h1>
     <div class="hero-rule" aria-hidden="true"></div>
@@ -42,16 +43,16 @@ const timelineItems = articles
     </p>
   </section>
 
-  <section class="container" data-animate>
-    <h2 class="section-title">適用タイムライン</h2>
-    <Timeline client:visible items={timelineItems} />
+  <section class="container ifrs-container ifrs-section" data-animate>
+    <h2 class="section-title">適用ロードマップ</h2>
+    <Roadmap items={roadmapItems} />
   </section>
 
-  <section class="container" data-animate>
+  <section class="container ifrs-container ifrs-section" data-animate>
     <div class="ifrs-list-head">
       <h2 class="section-title">記事一覧</h2>
       <div class="toggle-group" role="group" aria-label="ステータスで絞り込み" id="ifrs-filter">
-        <button type="button" aria-pressed="true" data-filter="all">全て</button>
+        <button type="button" aria-pressed="true" data-filter="all">すべて</button>
         <button type="button" aria-pressed="false" data-filter="effective">適用済み</button>
         <button type="button" aria-pressed="false" data-filter="upcoming">未発効</button>
         <button type="button" aria-pressed="false" data-filter="exposure-draft">公開草案</button>
@@ -60,24 +61,31 @@ const timelineItems = articles
     <div class="ifrs-card-grid" id="ifrs-card-grid" aria-live="polite">
       {articles.map((a) => <StandardCard entry={a} />)}
     </div>
+    <p class="ifrs-empty" id="ifrs-empty" hidden>該当する記事はありません</p>
   </section>
 </BaseLayout>
 
 <script>
   const group = document.getElementById('ifrs-filter');
   const grid = document.getElementById('ifrs-card-grid');
-  if (group && grid) {
+  const empty = document.getElementById('ifrs-empty');
+  if (group && grid && empty) {
     const buttons = group.querySelectorAll('button[data-filter]');
     const cards = grid.querySelectorAll('[data-status]');
     group.addEventListener('click', (e) => {
-      const btn = e.target.closest('button[data-filter]');
+      const target = e.target as HTMLElement;
+      const btn = target.closest('button[data-filter]') as HTMLButtonElement | null;
       if (!btn) return;
       buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
       const filter = btn.dataset.filter;
+      let visibleCount = 0;
       cards.forEach((c) => {
-        const show = filter === 'all' || c.dataset.status === filter;
-        c.style.display = show ? '' : 'none';
+        const el = c as HTMLElement;
+        const show = filter === 'all' || el.dataset.status === filter;
+        el.style.display = show ? '' : 'none';
+        if (show) visibleCount += 1;
       });
+      empty.hidden = visibleCount > 0;
     });
   }
 </script>
